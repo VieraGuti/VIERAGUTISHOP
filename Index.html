@@ -1,6 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Comandos - Rust Style</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2b2b2b;
+            color: #d4d4d4;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #ffa500;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, select, button {
+            padding: 5px;
+            margin-bottom: 10px;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input:focus, select:focus, button:focus {
+            outline: none;
+            border-color: #ffa500;
+            box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+        }
+
+        button {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ffa500;
+        }
+
+        .command-list {
+            margin-top: 20px;
+        }
+
+        .command-item {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #555;
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .command-item button {
+            margin-left: 10px;
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .command-item button:hover {
+            background-color: #ffa500;
+        }
+    </style>
+</head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Comandos - Rust Style</title>
@@ -343,354 +417,4 @@
             <option value="sulfur">Sulfur</option>
             <option value="targeting.computer">Targeting Computer</option>
             <option value="water">Water</option>
-            <option value="skull.wolf">Wolf Skull</option>
-            <option value="wood">Wood</option>
-                            </optgroup>
-                                    <optgroup label="Attire">
-            <option value="mask.bandana">Bandana Mask</option>
-            <option value="barrelcostume">Barrel Costume</option>
-            <option value="hat.cap">Baseball Cap</option>
-            <option value="hat.beenie">Beenie Hat</option>
-            <option value="bone.armor.suit">Bone Armor</option>
-            <option value="deer.skull.mask">Bone Helmet</option>
-            <option value="hat.boonie">Boonie Hat</option>
-            <option value="shoes.boots">Boots</option>
-            <option value="bucket.helmet">Bucket Helmet</option>
-            <option value="burlap.gloves.new">Burlap Gloves</option>
-            <option value="burlap.headwrap">Burlap Headwrap</option>
-            <option value="burlap.shirt">Burlap Shirt</option>
-            <option value="burlap.shoes">Burlap Shoes</option>
-            <option value="burlap.trousers">Burlap Trousers</option>
-            <option value="hat.candle">Candle Hat</option>
-            <option value="coffeecan.helmet">Coffee Can Helmet</option>
-            <option value="cratecostume">Crate Costume</option>
-            <option value="diving.fins">Diving Fins</option>
-            <option value="diving.mask">Diving Mask</option>
-            <option value="diving.tank">Diving Tank</option>
-            <option value="boots.frog">Frog Boots</option>
-            <option value="hazmatsuit">Hazmat Suit</option>
-            <option value="heavy.plate.helmet">Heavy Plate Helmet</option>
-            <option value="heavy.plate.jacket">Heavy Plate Jacket</option>
-            <option value="heavy.plate.pants">Heavy Plate Pants</option>
-            <option value="attire.hide.boots">Hide Boots</option>
-            <option value="attire.hide.helterneck">Hide Halterneck</option>
-            <option value="attire.hide.pants">Hide Pants</option>
-            <option value="attire.hide.poncho">Hide Poncho</option>
-            <option value="attire.hide.skirt">Hide Skirt</option>
-            <option value="attire.hide.vest">Hide Vest</option>
-            <option value="hoodie">Hoodie</option>
-            <option value="mask.balaclava">Improvised Balaclava</option>
-            <option value="jacket">Jacket</option>
-            <option value="largebackpack">Large Backpack</option>
-            <option value="burlap.gloves">Leather Gloves</option>
-            <option value="tshirt.long">Longsleeve T-Shirt</option>
-            <option value="lumberjack hoodie">Lumberjack Hoodie</option>
-            <option value="metal.plate.torso">Metal Chest Plate</option>
-            <option value="metal.facemask">Metal Facemask</option>
-            <option value="hat.miner">Miners Hat</option>
-            <option value="nightvisiongoggles">Night Vision Goggles</option>
-            <option value="pants">Pants</option>
-            <option value="partyhat">Party Hat</option>
-            <option value="riot.helmet">Riot Helmet</option>
-            <option value="roadsign.gloves">Roadsign Gloves</option>
-            <option value="roadsign.jacket">Road Sign Jacket</option>
-            <option value="roadsign.kilt">Road Sign Kilt</option>
-            <option value="shirt.collared">Shirt</option>
-            <option value="pants.shorts">Shorts</option>
-            <option value="smallbackpack">Small Backpack</option>
-            <option value="jacket.snow">Snow Jacket</option>
-            <option value="tactical.gloves">Tactical Gloves</option>
-            <option value="shirt.tanktop">Tank Top</option>
-            <option value="tshirt">T-Shirt</option>
-            <option value="diving.wetsuit">Wetsuit</option>
-            <option value="hat.wolf">Wolf Headdress</option>
-            <option value="wood.armor.helmet">Wood Armor Helmet</option>
-            <option value="wood.armor.pants">Wood Armor Pants</option>
-            <option value="wood.armor.jacket">Wood Chestplate</option>
-            <option value="horse.shoes.basic">Basic Horse Shoes</option>
-            <option value="horse.saddle.double">Double Horse Saddle</option>
-            <option value="horse.shoes.advanced">High Quality Horse Shoes</option>
-            <option value="horse.saddle">Horse Saddle</option>
-            <option value="horse.armor.roadsign">Roadsign Horse Armor</option>
-            <option value="horse.saddlebag">Saddle bag</option>
-            <option value="horse.saddle.single">Single Horse Saddle</option>
-            <option value="horse.armor.wood">Wooden Horse Armor</option>
-                                    </optgroup>
-                                            <optgroup label="Tools">
-            <option value="tool.binoculars">Binoculars</option>
-            <option value="cakefiveyear">Birthday Cake</option>
-            <option value="chainsaw">Chainsaw</option>
-            <option value="flare">Flare</option>
-            <option value="flashlight.held">Flashlight</option>
-            <option value="hammer">Hammer</option>
-            <option value="fishingrod.handmade">Handmade Fishing Rod</option>
-            <option value="hatchet">Hatchet</option>
-            <option value="jackhammer">Jackhammer</option>
-            <option value="pickaxe">Pickaxe</option>
-            <option value="pipetool">Pipe Tool</option>
-            <option value="rf.detonator">RF Transmitter</option>
-            <option value="rock">Rock</option>
-            <option value="axe.salvaged">Salvaged Axe</option>
-            <option value="hammer.salvaged">Salvaged Hammer</option>
-            <option value="icepick.salvaged">Salvaged Icepick</option>
-            <option value="explosive.satchel">Satchel Charge</option>
-            <option value="grenade.smoke">Smoke Grenade</option>
-            <option value="spraycan">Spray Can</option>
-            <option value="stonehatchet">Stone Hatchet</option>
-            <option value="stone.pickaxe">Stone Pickaxe</option>
-            <option value="supply.signal">Supply Signal</option>
-            <option value="explosive.timed">Timed Explosive Charge</option>
-            <option value="torch">Torch</option>
-            <option value="bucket.water">Water Bucket</option>
-                                            </optgroup>
-                                                    <optgroup label="Meds and Teas">
-            <option value="antiradpills">Anti-Radiation Pills</option>
-            <option value="bandage">Bandage</option>
-            <option value="largemedkit">Large Medkit</option>
-            <option value="syringe.medical">Medical Syringe</option>
-
-            <option value="radiationresisttea.advanced">Advanced Anti-Rad Tea</option>
-            <option value="healingtea.advanced">Advanced Healing Tea</option>
-            <option value="maxhealthtea.advanced">Advanced Max Health Tea</option>
-            <option value="oretea.advanced">Advanced Ore Tea</option>
-            <option value="radiationremovetea.advanced">Advanced Rad. Removal Tea</option>
-            <option value="scraptea.advanced">Advanced Scrap Tea</option>
-            <option value="woodtea.advanced">Advanced Wood Tea</option>
-            <option value="radiationresisttea">Anti-Rad Tea</option>
-            <option value="healingtea">Basic Healing Tea</option>
-            <option value="maxhealthtea">Basic Max Health Tea</option>
-            <option value="oretea">Basic Ore Tea</option>
-            <option value="scraptea">Basic Scrap Tea</option>
-            <option value="woodtea">Basic Wood Tea</option>
-            <option value="radiationresisttea.pure">Pure Anti-Rad Tea</option>
-            <option value="healingtea.pure">Pure Healing Tea</option>
-            <option value="maxhealthtea.pure">Pure Max Health Tea</option>
-            <option value="oretea.pure">Pure Ore Tea</option>
-            <option value="radiationremovetea.pure">Pure Rad. Removal Tea</option>
-            <option value="scraptea.pure">Pure Scrap Tea</option>
-            <option value="woodtea.pure">Pure Wood Tea</option>
-            <option value="radiationremovetea">Rad. Removal Tea</option>
-                                                    </optgroup>
-                                                            <optgroup label="Food and Plants">
-            <option value="fish.anchovy">Anchovy</option>
-            <option value="apple">Apple</option>
-            <option value="black.raspberries">Black Raspberries</option>
-            <option value="blueberries">Blueberries</option>
-            <option value="blue.berry">Blue Berry</option>
-            <option value="clone.blue.berry">Blue Berry Clone</option>
-            <option value="seed.blue.berry">Blue Berry Seed</option>
-            <option value="bearmeat.burned">Burnt Bear Meat</option>
-            <option value="chicken.burned">Burnt Chicken</option>
-            <option value="deermeat.burned">Burnt Deer Meat</option>
-            <option value="horsemeat.burned">Burnt Horse Meat</option>
-            <option value="humanmeat.burned">Burnt Human Meat</option>
-            <option value="meat.pork.burned">Burnt Pork</option>
-            <option value="wolfmeat.burned">Burnt Wolf Meat</option>
-            <option value="cactusflesh">Cactus Flesh</option>
-            <option value="can.beans">Can of Beans</option>
-            <option value="can.tuna">Can of Tuna</option>
-            <option value="fish.catfish">Catfish</option>
-            <option value="chocolate">Chocolate Bar</option>
-            <option value="bearmeat.cooked">Cooked Bear Meat</option>
-            <option value="chicken.cooked">Cooked Chicken</option>
-            <option value="deermeat.cooked">Cooked Deer Meat</option>
-            <option value="fish.cooked">Cooked Fish</option>
-            <option value="horsemeat.cooked">Cooked Horse Meat</option>
-            <option value="humanmeat.cooked">Cooked Human Meat</option>
-            <option value="meat.pork.cooked">Cooked Pork</option>
-            <option value="wolfmeat.cooked">Cooked Wolf Meat</option>
-            <option value="corn">Corn</option>
-            <option value="clone.corn">Corn Clone</option>
-            <option value="seed.corn">Corn Seed</option>
-            <option value="granolabar">Granola Bar</option>
-            <option value="green.berry">Green Berry</option>
-            <option value="clone.green.berry">Green Berry Clone</option>
-            <option value="seed.green.berry">Green Berry Seed</option>
-            <option value="grub">Grub</option>
-            <option value="clone.hemp">Hemp Clone</option>
-            <option value="seed.hemp">Hemp Seed</option>
-            <option value="fish.herring">Herring</option>
-            <option value="fish.minnows">Minnows</option>
-            <option value="mushroom">Mushroom</option>
-            <option value="fish.orangeroughy">Orange Roughy</option>
-            <option value="jar.pickle">Pickles</option>
-            <option value="potato">Potato</option>
-            <option value="clone.potato">Potato Clone</option>
-            <option value="seed.potato">Potato Seed</option>
-            <option value="pumpkin">Pumpkin</option>
-            <option value="clone.pumpkin">Pumpkin Plant Clone</option>
-            <option value="seed.pumpkin">Pumpkin Seed</option>
-            <option value="bearmeat">Raw Bear Meat</option>
-            <option value="chicken.raw">Raw Chicken Breast</option>
-            <option value="deermeat.raw">Raw Deer Meat</option>
-            <option value="fish.raw">Raw Fish</option>
-            <option value="horsemeat.raw">Raw Horse Meat</option>
-            <option value="humanmeat.raw">Raw Human Meat</option>
-            <option value="meat.boar">Raw Pork</option>
-            <option value="wolfmeat.raw">Raw Wolf Meat</option>
-            <option value="red.berry">Red Berry</option>
-            <option value="clone.red.berry">Red Berry Clone</option>
-            <option value="seed.red.berry">Red Berry Seed</option>
-            <option value="fish.salmon">Salmon</option>
-            <option value="fish.sardine">Sardine</option>
-            <option value="fish.smallshark">Small Shark</option>
-            <option value="fish.troutsmall">Small Trout</option>
-            <option value="smallwaterbottle">Small Water Bottle</option>
-            <option value="waterjug">Water Jug</option>
-            <option value="white.berry">White Berry</option>
-            <option value="clone.white.berry">White Berry Clone</option>
-            <option value="seed.white.berry">White Berry Seed</option>
-            <option value="worm">Worm</option>
-            <option value="yellow.berry">Yellow Berry</option>
-            <option value="clone.yellow.berry">Yellow Berry Clone</option>
-            <option value="seed.yellow.berry">Yellow Berry Seed</option>
-            <option value="fish.yellowperch">Yellow Perch</option>
-                                                            </optgroup>
-                                                                    <optgroup label="Traps and Miscellaneous">
-            <option value="flameturret">Flame Turret</option>
-            <option value="trap.landmine">Landmine</option>
-            <option value="guntrap">Shotgun Trap</option>
-            <option value="trap.bear">Snap Trap</option>
-            <option value="spikes.floor">Wooden Floor Spikes</option>
-            <option value="keycard_blue">Blue Keycard</option>
-            <option value="door.key">Door key</option>
-            <option value="keycard_green">Green Keycard</option>
-            <option value="fun.guitar">Guitar</option>
-            <option value="note">Note</option>
-            <option value="keycard_red">Red Keycard</option>
-                                                                    </optgroup>
-                                                                            <optgroup label="Components">
-            <option value="fuse">Electric Fuse</option>
-            <option value="propanetank">Empty Propane Tank</option>
-            <option value="gears">Gears</option>
-            <option value="metalblade">Metal Blade</option>
-            <option value="metalpipe">Metal Pipe</option>
-            <option value="metalspring">Metal Spring</option>
-            <option value="riflebody">Rifle Body</option>
-            <option value="roadsigns">Road Signs</option>
-            <option value="rope">Rope</option>
-            <option value="semibody">Semi Automatic Body</option>
-            <option value="sewingkit">Sewing Kit</option>
-            <option value="sheetmetal">Sheet Metal</option>
-            <option value="smgbody">SMG Body</option>
-            <option value="tarp">Tarp</option>
-            <option value="techparts">Tech Trash</option>
-                                                                            </optgroup>
-                                                                                    <optgroup label="Electrical">
-            <option value="electric.andswitch">AND Switch</option>
-            <option value="electric.audioalarm">Audio Alarm</option>
-            <option value="autoturret">Auto Turret</option>
-            <option value="electric.blocker">Blocker</option>
-            <option value="electric.button">Button</option>
-            <option value="ceilinglight">Ceiling Light</option>
-            <option value="computerstation">Computer Station</option>
-            <option value="electric.counter">Counter</option>
-            <option value="electric.doorcontroller">Door Controller</option>
-            <option value="electrical.branch">Electrical Branch</option>
-            <option value="electric.furnace">Electric Furnace</option>
-            <option value="electric.heater">Electric Heater</option>
-            <option value="elevator">Elevator</option>
-            <option value="electric.flasherlight">Flasher Light</option>
-            <option value="fluid.combiner">Fluid Combiner</option>
-            <option value="fluid.splitter">Fluid Splitter</option>
-            <option value="fluid.switch">Fluid Switch & Pump</option>
-            <option value="electric.hbhfsensor">HBHF Sensor</option>
-            <option value="hosetool">Hose Tool</option>
-            <option value="electric.igniter">Igniter</option>
-            <option value="industrial.combiner">Industrial Combiner</option>
-            <option value="industrial.conveyor">Industrial Conveyor</option>
-            <option value="industrial.crafter">Industrial Crafter</option>
-            <option value="industrial.splitter">Industrial Splitter</option>
-            <option value="electric.battery.rechargable.large">Large Rechargeable Battery</option>
-            <option value="electric.solarpanel.large">Large Solar Panel</option>
-            <option value="electric.laserdetector">Laser Detector</option>
-            <option value="electric.battery.rechargable.medium">Medium Rechargeable Battery</option>
-            <option value="electrical.memorycell">Memory Cell</option>
-            <option value="electric.orswitch">OR Switch</option>
-            <option value="powered.water.purifier">Powered Water Purifier</option>
-            <option value="electric.pressurepad">Pressure Pad</option>
-            <option value="electric.random.switch">RAND Switch</option>
-            <option value="target.reactive">Reactive Target</option>
-            <option value="electric.rf.broadcaster">RF Broadcaster</option>
-            <option value="rf_pager">RF Pager</option>
-            <option value="electric.rf.receiver">RF Receiver</option>
-            <option value="electrical.combiner">Root Combiner</option>
-            <option value="searchlight">Search Light</option>
-            <option value="electric.seismicsensor">Seismic Sensor</option>
-            <option value="electric.sirenlight">Siren Light</option>
-            <option value="electric.battery.rechargable.small">Small Rechargeable Battery</option>
-            <option value="electric.fuelgenerator.small">Small Generator</option>
-            <option value="electric.splitter">Splitter</option>
-            <option value="electric.sprinkler">Sprinkler</option>
-            <option value="storageadapter">Storage Adapter</option>
-            <option value="storage.monitor">Storage Monitor</option>
-            <option value="electric.switch">Switch</option>
-            <option value="electric.teslacoil">Tesla Coil</option>
-            <option value="electric.generator.small">Test Generator</option>
-            <option value="electric.timer">Timer</option>
-            <option value="waterpump">Water Pump</option>
-            <option value="generator.wind.scrap">Wind Turbine</option>
-            <option value="wiretool">Wire Tool</option>
-            <option value="electric.xorswitch">XOR Switch</option>
-                                                                                    </optgroup>
-                                                                                    
-       <optgroup label="Electrical">
-            <option value="electric.andswitch">AND Switch</option>
-            <option value="electric.audioalarm">Audio Alarm</option>
-            <option value="autoturret">Auto Turret</option>
-            <option value="electric.blocker">Blocker</option>
-            <option value="electric.button">Button</option>
-            <option value="ceilinglight">Ceiling Light</option>
-            <option value="computerstation">Computer Station</option>
-            <option value="electric.counter">Counter</option>
-            <option value="electric.doorcontroller">Door Controller</option>
-            <option value="electrical.branch">Electrical Branch</option>
-            <option value="electric.furnace">Electric Furnace</option>
-            <option value="electric.heater">Electric Heater</option>
-            <option value="elevator">Elevator</option>
-            <option value="electric.flasherlight">Flasher Light</option>
-            <option value="fluid.combiner">Fluid Combiner</option>
-            <option value="fluid.splitter">Fluid Splitter</option>
-            <option value="fluid.switch">Fluid Switch & Pump</option>
-            <option value="electric.hbhfsensor">HBHF Sensor</option>
-            <option value="hosetool">Hose Tool</option>
-            <option value="electric.igniter">Igniter</option>
-            <option value="industrial.combiner">Industrial Combiner</option>
-            <option value="industrial.conveyor">Industrial Conveyor</option>
-            <option value="industrial.crafter">Industrial Crafter</option>
-            <option value="industrial.splitter">Industrial Splitter</option>
-            <option value="electric.battery.rechargable.large">Large Rechargeable Battery</option>
-            <option value="electric.solarpanel.large">Large Solar Panel</option>
-            <option value="electric.laserdetector">Laser Detector</option>
-            <option value="electric.battery.rechargable.medium">Medium Rechargeable Battery</option>
-            <option value="electrical.memorycell">Memory Cell</option>
-            <option value="electric.orswitch">OR Switch</option>
-            <option value="powered.water.purifier">Powered Water Purifier</option>
-            <option value="electric.pressurepad">Pressure Pad</option>
-            <option value="electric.random.switch">RAND Switch</option>
-            <option value="target.reactive">Reactive Target</option>
-            <option value="electric.rf.broadcaster">RF Broadcaster</option>
-            <option value="rf_pager">RF Pager</option>
-            <option value="electric.rf.receiver">RF Receiver</option>
-            <option value="electrical.combiner">Root Combiner</option>
-            <option value="searchlight">Search Light</option>
-            <option value="electric.seismicsensor">Seismic Sensor</option>
-            <option value="electric.sirenlight">Siren Light</option>
-            <option value="electric.battery.rechargable.small">Small Rechargeable Battery</option>
-            <option value="electric.fuelgenerator.small">Small Generator</option>
-            <option value="electric.splitter">Splitter</option>
-            <option value="electric.sprinkler">Sprinkler</option>
-            <option value="storageadapter">Storage Adapter</option>
-            <option value="storage.monitor">Storage Monitor</option>
-            <option value="electric.switch">Switch</option>
-            <option value="electric.teslacoil">Tesla Coil</option>
-            <option value="electric.generator.small">Test Generator</option>
-            <option value="electric.timer">Timer</option>
-            <option value="waterpump">Water Pump</option>
-            <option value="generator.wind.scrap">Wind Turbine</option>
-            <option value="wiretool">Wire Tool</option>
-            <option value="electric.xorswitch">XOR Switch</option>
-        </optgroup>
-    </select>
-</body>
-</html>
+            <opti
