@@ -1,3 +1,4 @@
+const items = {
 ammo: [
     { id: 'ammo.shotgun', name: '12 Gauge Buckshot' },
     { id: 'ammo.shotgun.fire', name: '12 Gauge Incendiary Shell' },
@@ -396,3 +397,4 @@ electrical: [
     { id: 'electric.timer', name: 'Timer' },
     { id: 'waterpump', name: 'Water Pump' },
     { id: 'generator.wind.scrap', name: 'Wind Tur
+};
