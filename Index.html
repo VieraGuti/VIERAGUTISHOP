@@ -1,228 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos - Rust Style</title>
+    <title>Generador de Comandos</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #2b2b2b;
-            color: #d4d4d4;
-            margin: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            margin: 0;
+            padding: 20px;
         }
-
         h1 {
-            color: #ffa500;
+            text-align: center;
         }
-
+        label {
+            display: block;
+            margin: 10px 0 5px;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Comandos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
         label {
             display: block;
             margin: 10px 0 5px;
         }
-
         input, select, button {
-            padding: 5px;
-            margin-bottom: 10px;
             width: 100%;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #555;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            margin: 5px 0 10px;
+            border: none;
+            border-radius: 5px;
         }
-
-        input:focus, select:focus, button:focus {
-            outline: none;
-            border-color: #ffa500;
-            box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
-        }
-
         button {
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #ffa500;
-        }
-
-        .command-list {
-            margin-top: 20px;
-        }
-
-        .command-item {
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #555;
-            background-color: #1e1e1e;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 4px;
-        }
-
-        .command-item button {
-            margin-left: 10px;
-            background-color: #333;
-            border: 1px solid #555;
-        }
-
-        .command-item button:hover {
-            background-color: #ffa500;
-        }
-    </style>
-</head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos - Rust Style</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #2b2b2b;
-            color: #d4d4d4;
-            margin: 20px;
-        }
-        h1 {
-            color: #ffa500;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input, select, button {
-            padding: 5px;
-            margin-bottom: 10px;
-            width: 100%;
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #555;
-        }
-        button:hover {
-            background-color: #ffa500;
+            background-color: #007BFF;
+            color: white;
             cursor: pointer;
         }
-        .command-list {
+        button:hover {
+            background-color: #0056b3;
+        }
+        #command_list {
             margin-top: 20px;
         }
         .command-item {
+            background-color: #333;
             padding: 10px;
             margin: 5px 0;
-            border: 1px solid #555;
-            background-color: #1e1e1e;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .command-item button {
-            margin-left: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-
     <h1>Generador de Comandos</h1>
-
-    <label for="display_name">Nombre del Ítem (display_name):</label>
+    <label for="display_name">Nombre del ítem (display_name):</label>
     <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
-
-    <label for="short_name">Categoría del Ítem (short_name):</label>
-    <select id="short_name">
-        <optgroup label="Ammo">
-            <option value="ammo.shotgun">12 Gauge Buckshot</option>
-            <option value="ammo.shotgun.fire">12 Gauge Incendiary Shell</option>
-            <option value="ammo.shotgun.slug">12 Gauge Slug</option>
-            <option value="ammo.grenadelauncher.he">40mm HE Grenade</option>
-            <option value="ammo.grenadelauncher.buckshot">40mm Shotgun Round</option>
-            <option value="ammo.grenadelauncher.smoke">40mm Smoke Grenade</option>
-            <option value="ammo.rifle">5.56 Rifle Ammo</option>
-            <option value="ammo.rifle.explosive">Explosive 5.56 Rifle Ammo</option>
-            <option value="ammo.handmade.shell">Handmade Shell</option>
-            <option value="ammo.rocket.hv">High Velocity Rocket</option>
-            <option value="ammo.rifle.hv">HV 5.56 Rifle Ammo</option>
-            <option value="ammo.pistol.hv">HV Pistol Ammo</option>
-            <option value="ammo.rifle.incendiary">Incendiary 5.56 Rifle Ammo</option>
-            <option value="ammo.pistol.fire">Incendiary Pistol Bullet</option>
-            <option value="ammo.rocket.fire">Incendiary Rocket</option>
-            <option value="ammo.nailgun.nails">Nailgun Nails</option>
-            <option value="ammo.pistol">Pistol Bullet</option>
-            <option value="ammo.rocket.basic">Rocket</option>
-            <option value="submarine.torpedo.straight">Torpedo</option>
-        </optgroup>
-    </select>
-
-    <label for="cost">Precio del Ítem (cost):</label>
-    <input type="number" id="cost" placeholder="Escribe el precio">
-
-    <label for="server">Servidor (server):</label>
-    <select id="server">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-    </select>
-
-    <button onclick="generateCommand()">Generar Comando</button>
-
-    <div class="command-list" id="command_list">
-        <!-- Aquí se mostrarán los comandos generados -->
-    </div>
-
-    <script>
-        let commands = JSON.parse(localStorage.getItem('commands')) || [];
-
-        function generateCommand() {
-            const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('short_name').value;
-            const cost = document.getElementById('cost').value;
-            const server = document.getElementById('server').value;
-
-            const command = `/additem display_name:${displayName} short_name:${shortName} cost:${cost} server:${server}`;
-
-            commands.push(command);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
-
-        function displayCommands() {
-            const commandList = document.getElementById('command_list');
-            commandList.innerHTML = '';
-
-            commands.forEach((cmd, index) => {
-                const commandItem = document.createElement('div');
-                commandItem.className = 'command-item';
-                commandItem.innerHTML = `
-                    <span>${cmd}</span>
-                    <div>
-                        <button onclick="copyCommand(${index})">Copiar</button>
-                        <button onclick="deleteCommand(${index})">Eliminar</button>
-                    </div>
-                `;
-                commandList.appendChild(commandItem);
-            });
-        }
-
-        function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
-        }
-
-        function deleteCommand(index) {
-            commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
-
-        // Mostrar los comandos guardados al cargar la página
-        window.onload = displayCommands;
-    </script>
-        <label for="short_name">Categoría del Ítem (short_name):</label>
+    
+    <label for="short_name">Categoría del ítem (short_name):</label>
     <select id="short_name">
         <optgroup label="Ammo">
             <option value="ammo.shotgun">12 Gauge Buckshot</option>
@@ -259,7 +107,6 @@
             <option value="grenade.beancan">Beancan Grenade</option>
             <option value="rifle.bolt">Bolt Action Rifle</option>
             <option value="bone.club">Bone Club</option>
-            <option value="knife.bone">Bone Knife</option>
             <option value="knife.combat">Combat Knife</option>
             <option value="bow.compound">Compound Bow</option>
             <option value="crossbow">Crossbow</option>
@@ -299,8 +146,7 @@
             <option value="shotgun.waterpipe">Waterpipe Shotgun</option>
             <option value="spear.wooden">Wooden Spear</option>
         </optgroup>
-    </select>
-            <optgroup label="Construction Items">
+          <optgroup label="Construction Items">
             <option value="door.hinged.toptier">Armored Door</option>
             <option value="door.double.hinged.toptier">Armored Double Door</option>
             <option value="barricade.woodwire">Barbed Wooden Barricade</option>
@@ -345,8 +191,8 @@
             <option value="door.hinged.wood">Wooden Door</option>
             <option value="ladder.wooden.wall">Wooden Ladder</option>
             <option value="wall.window.bars.wood">Wooden Window Bars</option>
-            </optgroup>
-                    <optgroup label="Items">
+        </optgroup>
+        <optgroup label="Items">
             <option value="bbq">Barbeque</option>
             <option value="bed">Bed</option>
             <option value="botabag">Bota Bag</option>
@@ -387,8 +233,8 @@
             <option value="workbench1">Workbench Level 1</option>
             <option value="workbench2">Workbench Level 2</option>
             <option value="workbench3">Workbench Level 3</option>
-                    </optgroup>
-                            <optgroup label="Resources">
+        </optgroup>
+              <optgroup label="Resources">
             <option value="fat.animal">Animal Fat</option>
             <option value="bone.fragments">Bone Fragments</option>
             <option value="cctv.camera">CCTV Camera</option>
@@ -417,4 +263,307 @@
             <option value="sulfur">Sulfur</option>
             <option value="targeting.computer">Targeting Computer</option>
             <option value="water">Water</option>
-            <opti
+            <option value="skull.wolf">Wolf Skull</option>
+            <option value="wood">Wood</option>
+        </optgroup>
+        <optgroup label="Attire">
+            <option value="mask.bandana">Bandana Mask</option>
+            <option value="barrelcostume">Barrel Costume</option>
+            <option value="hat.cap">Baseball Cap</option>
+            <option value="hat.beenie">Beenie Hat</option>
+            <option value="bone.armor.suit">Bone Armor</option>
+            <option value="deer.skull.mask">Bone Helmet</option>
+            <option value="hat.boonie">Boonie Hat</option>
+            <option value="shoes.boots">Boots</option>
+            <option value="bucket.helmet">Bucket Helmet</option>
+            <option value="burlap.gloves.new">Burlap Gloves</option>
+            <option value="burlap.headwrap">Burlap Headwrap</option>
+            <option value="burlap.shirt">Burlap Shirt</option>
+            <option value="burlap.shoes">Burlap Shoes</option>
+            <option value="burlap.trousers">Burlap Trousers</option>
+            <option value="hat.candle">Candle Hat</option>
+            <option value="coffeecan.helmet">Coffee Can Helmet</option>
+            <option value="cratecostume">Crate Costume</option>
+            <option value="diving.fins">Diving Fins</option>
+            <option value="diving.mask">Diving Mask</option>
+            <option value="diving.tank">Diving Tank</option>
+            <option value="boots.frog">Frog Boots</option>
+            <option value="hazmatsuit">Hazmat Suit</option>
+            <option value="heavy.plate.helmet">Heavy Plate Helmet</option>
+            <option value="heavy.plate.jacket">Heavy Plate Jacket</option>
+            <option value="heavy.plate.pants">Heavy Plate Pants</option>
+            <option value="attire.hide.boots">Hide Boots</option>
+            <option value="attire.hide.helterneck">Hide Halterneck</option>
+            <option value="attire.hide.pants">Hide Pants</option>
+            <option value="attire.hide.poncho">Hide Poncho</option>
+            <option value="attire.hide.skirt">Hide Skirt</option>
+            <option value="attire.hide.vest">Hide Vest</option>
+            <option value="hoodie">Hoodie</option>
+            <option value="mask.balaclava">Improvised Balaclava</option>
+            <option value="jacket">Jacket</option>
+            <option value="largebackpack">Large Backpack</option>
+            <option value="burlap.gloves">Leather Gloves</option>
+            <option value="tshirt.long">Longsleeve T-Shirt</option>
+            <option value="lumberjack hoodie">Lumberjack Hoodie</option>
+            <option value="metal.plate.torso">Metal Chest Plate</option>
+            <option value="metal.facemask">Metal Facemask</option>
+            <option value="hat.miner">Miners Hat</option>
+            <option value="nightvisiongoggles">Night Vision Goggles</option>
+            <option value="pants">Pants</option>
+            <option value="partyhat">Party Hat</option>
+            <option value="riot.helmet">Riot Helmet</option>
+            <option value="roadsign.gloves">Roadsign Gloves</option>
+            <option value="roadsign.jacket">Road Sign Jacket</option>
+            <option value="roadsign.kilt">Road Sign Kilt</option>
+            <option value="shirt.collared">Shirt</option>
+            <option value="pants.shorts">Shorts</option>
+            <option value="smallbackpack">Small Backpack</option>
+            <option value="jacket.snow">Snow Jacket</option>
+            <option value="tactical.gloves">Tactical Gloves</option>
+            <option value="shirt.tanktop">Tank Top</option>
+            <option value="tshirt">T-Shirt</option>
+            <option value="diving.wetsuit">Wetsuit</option>
+            <option value="hat.wolf">Wolf Headdress</option>
+            <option value="wood.armor.helmet">Wood Armor Helmet</option>
+            <option value="wood.armor.pants">Wood Armor Pants</option>
+            <option value="wood.armor.jacket">Wood Chestplate</option>
+            <option value="horse.shoes.basic">Basic Horse Shoes</option>
+            <option value="horse.saddle.double">Double Horse Saddle</option>
+            <option value="horse.shoes.advanced">High Quality Horse Shoes</option>
+            <option value="horse.saddle">Horse Saddle</option>
+            <option value="horse.armor.roadsign">Roadsign Horse Armor</option>
+            <option value="horse.saddlebag">Saddle bag</option>
+            <option value="horse.saddle.single">Single Horse Saddle</option>
+            <option value="horse.armor.wood">Wooden Horse Armor</option>
+        </optgroup>
+              <optgroup label="Tools">
+            <option value="tool.binoculars">Binoculars</option>
+            <option value="cakefiveyear">Birthday Cake</option>
+            <option value="chainsaw">Chainsaw</option>
+            <option value="flare">Flare</option>
+            <option value="flashlight.held">Flashlight</option>
+            <option value="hammer">Hammer</option>
+            <option value="fishingrod.handmade">Handmade Fishing Rod</option>
+            <option value="hatchet">Hatchet</option>
+            <option value="jackhammer">Jackhammer</option>
+            <option value="pickaxe">Pickaxe</option>
+            <option value="pipetool">Pipe Tool</option>
+            <option value="rf.detonator">RF Transmitter</option>
+            <option value="rock">Rock</option>
+            <option value="axe.salvaged">Salvaged Axe</option>
+            <option value="hammer.salvaged">Salvaged Hammer</option>
+            <option value="icepick.salvaged">Salvaged Icepick</option>
+            <option value="explosive.satchel">Satchel Charge</option>
+            <option value="grenade.smoke">Smoke Grenade</option>
+            <option value="spraycan">Spray Can</option>
+            <option value="stonehatchet">Stone Hatchet</option>
+            <option value="stone.pickaxe">Stone Pickaxe</option>
+            <option value="supply.signal">Supply Signal</option>
+            <option value="explosive.timed">Timed Explosive Charge</option>
+            <option value="torch">Torch</option>
+            <option value="bucket.water">Water Bucket</option>
+        </optgroup>
+        <optgroup label="Meds and Teas">
+            <option value="antiradpills">Anti-Radiation Pills</option>
+            <option value="bandage">Bandage</option>
+            <option value="largemedkit">Large Medkit</option>
+            <option value="syringe.medical">Medical Syringe</option>
+            <option value="radiationresisttea.advanced">Advanced Anti-Rad Tea</option>
+            <option value="healingtea.advanced">Advanced Healing Tea</option>
+            <option value="maxhealthtea.advanced">Advanced Max Health Tea</option>
+            <option value="oretea.advanced">Advanced Ore Tea</option>
+            <option value="radiationremovetea.advanced">Advanced Rad. Removal Tea</option>
+            <option value="scraptea.advanced">Advanced Scrap Tea</option>
+            <option value="woodtea.advanced">Advanced Wood Tea</option>
+            <option value="radiationresisttea">Anti-Rad Tea</option>
+            <option value="healingtea">Basic Healing Tea</option>
+            <option value="maxhealthtea">Basic Max Health Tea</option>
+            <option value="oretea">Basic Ore Tea</option>
+            <option value="scraptea">Basic Scrap Tea</option>
+            <option value="woodtea">Basic Wood Tea</option>
+            <option value="radiationremovetea.pure">Pure Anti-Rad Tea</option>
+            <option value="healingtea.pure">Pure Healing Tea</option>
+            <option value="maxhealthtea.pure">Pure Max Health Tea</option>
+            <option value="oretea.pure">Pure Ore Tea</option>
+            <option value="radiationremovetea.pure">Pure Rad. Removal Tea</option>
+            <option value="scraptea.pure">Pure Scrap Tea</option>
+            <option value="woodtea.pure">Pure Wood Tea</option>
+            <option value="radiationremovetea">Rad. Removal Tea</option>
+        </optgroup>
+        <optgroup label="Food and Plants">
+            <option value="fish.anchovy">Anchovy</option>
+            <option value="apple">Apple</option>
+            <option value="black.raspberries">Black Raspberries</option>
+            <option value="blueberries">Blueberries</option>
+            <option value="blue.berry">Blue Berry</option>
+            <option value="clone.blue.berry">Blue Berry Clone</option>
+            <option value="seed.blue.berry">Blue Berry Seed</option>
+            <option value="bearmeat.burned">Burnt Bear Meat</option>
+            <option value="chicken.burned">Burnt Chicken</option>
+            <option value="deermeat.burned">Burnt Deer Meat</option>
+            <option value="horsemeat.burned">Burnt Horse Meat</option>
+            <option value="humanmeat.burned">Burnt Human Meat</option>
+            <option value="meat.pork.burned">Burnt Pork</option>
+            <option value="wolfmeat.burned">Burnt Wolf Meat</option>
+            <option value="cactusflesh">Cactus Flesh</option>
+            <option value="can.beans">Can of Beans</option>
+            <option value="can.tuna">Can of Tuna</option>
+            <option value="fish.catfish">Catfish</option>
+            <option value="chocolate">Chocolate Bar</option>
+            <option value="bearmeat.cooked">Cooked Bear Meat</option>
+            <option value="chicken.cooked">Cooked Chicken</option>
+            <option value="deermeat.cooked">Cooked Deer Meat</option>
+            <option value="fish.cooked">Cooked Fish</option>
+            <option value="horsemeat.cooked">Cooked Horse Meat</option>
+            <option value="humanmeat.cooked">Cooked Human Meat</option>
+            <option value="meat.pork.cooked">Cooked Pork</option>
+            <option value="wolfmeat.cooked">Cooked Wolf Meat</option>
+            <option value="corn">Corn</option>
+            <option value="clone.corn">Corn Clone</option>
+            <option value="seed.corn">Corn Seed</option>
+            <option value="granolabar">Granola Bar</option>
+            <option value="green.berry">Green Berry</option>
+            <option value="clone.green.berry">Green Berry Clone</option>
+            <option value="seed.green.berry">Green Berry Seed</option>
+            <option value="grub">Grub</option>
+            <option value="clone.hemp">Hemp Clone</option>
+            <option value="seed.hemp">Hemp Seed</option>
+            <option value="fish.herring">Herring</option>
+            <option value="fish.minnows">Minnows</option>
+            <option value="mushroom">Mushroom</option>
+            <option value="fish.orangeroughy">Orange Roughy</option>
+            <option value="jar.pickle">Pickles</option>
+            <option value="potato">Potato</option>
+            <option value="clone.potato">Potato Clone</option>
+            <option value="seed.potato">Potato Seed</option>
+            <option value="pumpkin">Pumpkin</option>
+            <option value="clone.pumpkin">Pumpkin Plant Clone</option>
+            <option value="seed.pumpkin">Pumpkin Seed</option>
+            <option value="bearmeat">Raw Bear Meat</option>
+            <option value="chicken.raw">Raw Chicken Breast</option>
+            <option value="deermeat.raw">Raw Deer Meat</option>
+            <option value="fish.raw">Raw Fish</option>
+            <option value="horsemeat.raw">Raw Horse Meat</option>
+            <option value="humanmeat.raw">Raw Human Meat</option>
+            <option value="meat.boar">Raw Pork</option>
+            <option value="wolfmeat.raw">Raw Wolf Meat</option>
+            <option value="red.berry">Red Berry</option>
+            <option value="clone.red.berry">Red Berry Clone</option>
+            <option value="seed.red.berry">Red Berry Seed</option>
+            <option value="fish.salmon">Salmon</option>
+            <option value="fish.sardine">Sardine</option>
+            <option value="fish.smallshark">Small Shark</option>
+            <option value="fish.troutsmall">Small Trout</option>
+            <option value="smallwaterbottle">Small Water Bottle</option>
+            <option value="waterjug">Water Jug</option>
+            <option value="white.berry">White Berry</option>
+            <option value="clone.white.berry">White Berry Clone</option>
+            <option value="seed.white.berry">White Berry Seed</option>
+            <option value="worm">Worm</option>
+            <option value="yellow.berry">Yellow Berry</option>
+            <option value="clone.yellow.berry">Yellow Berry Clone</option>
+            <option value="seed.yellow.berry">Yellow Berry Seed</option>
+            <option value="fish.yellowperch">Yellow Perch</option>
+        </optgroup>
+        <optgroup label="Traps and Miscellaneous">
+            <option value="flameturret">Flame Turret</option>
+            <option value="beartrap">Bear Trap</option>
+            <option value="landmines">Landmine</option>
+            <option value="mines">Mine</option>
+            <option value="tripwire">Tripwire</option>
+            <option value="seartrap">Sear Trap</option>
+            <option value="targeting.computer">Targeting Computer</option>
+            <option value="tsar.timebomb">Tsar Time Bomb</option>
+            <option value="beartraps">Bear Traps</option>
+            <option value="woodtrap">Wooden Trap</option>
+        </optgroup>
+    </select>
+
+    <label for="cost">Precio del ítem (cost):</label>
+    <input type="number" id="cost" placeholder="Escribe el precio del ítem">
+
+    <label for="server">Servidor (server):</label>
+    <select id="server">
+        <option value="1">Servidor 1</option>
+        <option value="2">Servidor 2</option>
+        <option value="3">Servidor 3</option>
+        <option value="4">Servidor 4</option>
+        <option value="5">Servidor 5</option>
+        <option value="6">Servidor 6</option>
+        <option value="7">Servidor 6</option> 
+        <option value="8">Servidor 5</option>
+        <option value="9">Servidor 6</option>
+        <option value="10">Servidor 6</option> 
+    </select>
+
+    <button onclick="generateCommand()">Generar Comando</button>
+    
+    <div id="command_list"></div>
+
+    <script>
+        const commands = [];
+
+        function generateCommand() {
+            const displayName = document.getElementById('display_name').value;
+            const shortName = document.getElementById('short_name').value;
+            const cost = document.getElementById('cost').value;
+            const server = document.getElementById('server').value;
+
+            if (!displayName || !shortName || !cost || !server) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const command = `give ${server} ${shortName} ${cost} "${displayName}"`;
+            commands.push(command);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+        }
+
+        function displayCommands() {
+            const commandList = document.getElementById('command_list');
+            commandList.innerHTML = '';
+
+            commands.forEach((cmd, index) => {
+                const commandItem = document.createElement('div');
+                commandItem.className = 'command-item';
+                commandItem.innerHTML = `
+                    <span>${cmd}</span>
+                    <div>
+                        <button onclick="copyCommand(${index})">Copiar</button>
+                        <button onclick="deleteCommand(${index})">Eliminar</button>
+                    </div>
+                `;
+                commandList.appendChild(commandItem);
+            });
+        }
+
+        function copyCommand(index) {
+            const tempInput = document.createElement('input');
+            tempInput.value = commands[index];
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Comando copiado: ' + commands[index]);
+        }
+
+        function deleteCommand(index) {
+            commands.splice(index, 1);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+        }
+
+        // Cargar los comandos guardados al iniciar la página
+        window.onload = function() {
+            const savedCommands = localStorage.getItem('commands');
+            if (savedCommands) {
+                commands.push(...JSON.parse(savedCommands));
+                displayCommands();
+            }
+        };
+    </script>
+</body>
+</html>
+
+                                                      
