@@ -19,7 +19,7 @@ ammo: [
     { id: 'ammo.pistol', name: 'Pistol Bullet' },
     { id: 'ammo.rocket.basic', name: 'Rocket' },
     { id: 'submarine.torpedo.straight', name: 'Torpedo' }
-]
+],
 weapons: [
     { id: 'weapon.mod.burstmodule', name: 'Burst Module' },
     { id: 'weapon.mod.extendedmags', name: 'Extended Magazine' },
@@ -74,7 +74,7 @@ weapons: [
     { id: 'smg.thompson', name: 'Thompson' },
     { id: 'shotgun.waterpipe', name: 'Waterpipe Shotgun' },
     { id: 'spear.wooden', name: 'Wooden Spear' }
-]
+],
 construction: [
     { id: 'door.hinged.toptier', name: 'Armored Door' },
     { id: 'door.double.hinged.toptier', name: 'Armored Double Door' },
@@ -120,7 +120,7 @@ construction: [
     { id: 'door.hinged.wood', name: 'Wooden Door' },
     { id: 'ladder.wooden.wall', name: 'Wooden Ladder' },
     { id: 'wall.window.bars.wood', name: 'Wooden Window Bars' }
-]
+],
 items: [
     { id: 'bbq', name: 'Barbeque' },
     { id: 'bed', name: 'Bed' },
@@ -162,7 +162,7 @@ items: [
     { id: 'workbench1', name: 'Workbench Level 1' },
     { id: 'workbench2', name: 'Workbench Level 2' },
     { id: 'workbench3', name: 'Workbench Level 3' }
-]
+],
 resources: [
     { id: 'fat.animal', name: 'Animal Fat' },
     { id: 'bone.fragments', name: 'Bone Fragments' },
@@ -194,7 +194,7 @@ resources: [
     { id: 'water', name: 'Water' },
     { id: 'skull.wolf', name: 'Wolf Skull' },
     { id: 'wood', name: 'Wood' }
-]
+],
 attire: [
     { id: 'mask.bandana', name: 'Bandana Mask' },
     { id: 'barrelcostume', name: 'Barrel Costume' },
@@ -256,7 +256,7 @@ attire: [
     { id: 'wood.armor.helmet', name: 'Wood Armor Helmet' },
     { id: 'wood.armor.pants', name: 'Wood Armor Pants' },
     { id: 'wood.armor.jacket', name: 'Wood Chestplate' }
-]
+],
 tools: [
     { id: 'tool.binoculars', name: 'Binoculars' },
     { id: 'cakefiveyear', name: 'Birthday Cake' },
@@ -283,7 +283,7 @@ tools: [
     { id: 'explosive.timed', name: 'Timed Explosive Charge' },
     { id: 'torch', name: 'Torch' },
     { id: 'bucket.water', name: 'Water Bucket' }
-]
+],
 medsAndTeas: [
     { id: 'antiradpills', name: 'Anti-Radiation Pills' },
     { id: 'bandage', name: 'Bandage' },
@@ -311,7 +311,7 @@ medsAndTeas: [
     { id: 'scraptea.pure', name: 'Pure Scrap Tea' },
     { id: 'woodtea.pure', name: 'Pure Wood Tea' },
     { id: 'radiationremovetea', name: 'Rad. Removal Tea' }
-]
+],
 trapsAndMiscellaneous: [
     { id: 'flameturret', name: 'Flame Turret' },
     { id: 'trap.landmine', name: 'Landmine' },
@@ -325,7 +325,7 @@ trapsAndMiscellaneous: [
     { id: 'fun.guitar', name: 'Guitar' },
     { id: 'note', name: 'Note' },
     { id: 'keycard_red', name: 'Red Keycard' }
-]
+],
 components: [
     { id: 'fuse', name: 'Electric Fuse' },
     { id: 'propanetank', name: 'Empty Propane Tank' },
@@ -342,7 +342,7 @@ components: [
     { id: 'smgbody', name: 'SMG Body' },
     { id: 'tarp', name: 'Tarp' },
     { id: 'techparts', name: 'Tech Trash' }
-]
+],
 electrical: [
     { id: 'electric.andswitch', name: 'AND Switch' },
     { id: 'electric.audioalarm', name: 'Audio Alarm' },
