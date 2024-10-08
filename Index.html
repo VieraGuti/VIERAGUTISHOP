@@ -115,28 +115,34 @@
     
     <div id="command_list"></div>
 
-    <!-- Aquí es donde incluirás el script externo -->
-    <script src="items.js"></script>
-    <script>
-        const commands = [];
+    <!-- Asegúrate de que el nombre del archivo sea "items.js" y esté correctamente referenciado. -->
+<script src="items.js"></script>
+<script>
+    const commands = [];
 
-        function updateItemList() {
-            const category = document.getElementById('item_category').value;
-            const itemList = document.getElementById('item_list');
+    function updateItemList() {
+        const category = document.getElementById('item_category').value;
+        const itemList = document.getElementById('item_list');
 
-            // Limpiar las opciones actuales
-            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
+        // Limpiar las opciones actuales
+        itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
 
-            // Añadir ítems según la categoría seleccionada
-            if (items[category]) {
-                items[category].forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.name;
-                    itemList.appendChild(option);
-                });
-            }
+        // Añadir ítems según la categoría seleccionada
+        if (items[category]) {
+            items[category].forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.name;
+                itemList.appendChild(option);
+            });
+        } else {
+            console.log("No hay ítems para la categoría seleccionada.");
         }
+    }
+
+    // Aquí iría el resto de tu código (generar comando, copiar comando, etc.)
+</script>
+    
 
         function generateCommand() {
             const displayName = document.getElementById('display_name').value;
