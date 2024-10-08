@@ -6,7 +6,7 @@
     <title>Generador de Comandos - Rust Style</title>
     <style>
         body {
-            font-family: 'Rust', sans-serif; /* Cambia esto si tienes una fuente específica */
+            font-family: 'Rust', sans-serif;
             background-color: #1e1e1e;
             color: #fff;
             margin: 0;
@@ -121,7 +121,7 @@
     
     <div id="command_list"></div>
 
-    <!-- Aquí es donde incluirás el script externo -->
+    <!-- Incluir el script externo items.js -->
     <script src="items.js"></script>
     <script>
         const commands = [];
@@ -143,6 +143,8 @@
                     option.textContent = item.name;
                     itemList.appendChild(option);
                 });
+            } else {
+                console.log("Categoría seleccionada inválida o sin ítems.");
             }
         }
 
@@ -150,12 +152,13 @@
             const itemList = document.getElementById('item_list');
             const selectedItemName = document.getElementById('selected_item_name');
             const selectedItemId = document.getElementById('selected_item_id');
+            const selectedCategory = document.getElementById('item_category').value;
 
-            const selectedItem = items[item_category.value].find(item => item.id === itemList.value);
+            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
 
             if (selectedItem) {
-                selectedItemName.value = selectedItem.name; // Mostrar el nombre del ítem
-                selectedItemId.value = selectedItem.id; // Mostrar el ID del ítem
+                selectedItemName.value = selectedItem.name;
+                selectedItemId.value = selectedItem.id;
             } else {
                 selectedItemName.value = '';
                 selectedItemId.value = '';
@@ -174,7 +177,6 @@
                 return;
             }
 
-            // Formato del comando
             const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
             commands.push(command);
             localStorage.setItem('commands', JSON.stringify(commands));
@@ -207,7 +209,7 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
             alert('Comando copiado: ' + commands[index]);
-            // Añadir mensaje de "ya copiado"
+
             const commandItem = document.querySelectorAll('.command-item')[index];
             const copiedMessage = document.createElement('span');
             copiedMessage.className = 'copied-message';
@@ -221,7 +223,6 @@
             displayCommands();
         }
 
-        // Cargar los comandos guardados al iniciar la página
         window.onload = function() {
             const savedCommands = localStorage.getItem('commands');
             if (savedCommands) {
