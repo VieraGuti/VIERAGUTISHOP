@@ -396,5 +396,7 @@ electrical: [
     { id: 'electric.generator.small', name: 'Test Generator' },
     { id: 'electric.timer', name: 'Timer' },
     { id: 'waterpump', name: 'Water Pump' },
-    { id: 'generator.wind.scrap', name: 'Wind Tur
-};
+    { id: 'generator.wind.scrap', name: 'Wind Turbine' }
+        // No coma al final
+    ]
+}; // Cerrar correctamente el objeto 'items'
