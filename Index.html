@@ -6,62 +6,86 @@
     <title>Generador de Comandos - Rust Style</title>
     <style>
         body {
-            font-family: 'Rust', sans-serif;
-            background-color: #1e1e1e;
-            color: #fff;
+            font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
+            background-color: #1e1e1e; /* Fondo oscuro */
+            color: #fff; /* Texto claro */
             margin: 0;
             padding: 20px;
         }
+
         h1 {
             text-align: center;
             font-size: 2.5em;
+            color: #FF4500; /* Naranja Rust */
             text-shadow: 2px 2px 4px #000;
         }
+
         label {
             display: block;
             margin: 10px 0 5px;
         }
+
         input, select, button {
             width: 100%;
             padding: 10px;
             margin: 5px 0 10px;
             border: none;
             border-radius: 5px;
-            background-color: #333;
+            background-color: #333; /* Fondo de campos */
             color: #fff;
             font-size: 1em;
         }
+
         button {
-            background-color: #007BFF;
+            background-color: #FF4500; /* Naranja Rust */
             color: white;
             cursor: pointer;
         }
+
         button:hover {
-            background-color: #0056b3;
+            background-color: #E53E00; /* Hover más oscuro */
         }
+
         #command_list {
             margin-top: 20px;
+            padding: 10px;
+            background-color: #292929; /* Cuadro oscuro */
+            border: 2px solid #FF4500; /* Borde naranja */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Sombra */
         }
+
         .command-item {
-            background-color: #444;
+            background-color: #444; /* Fondo de cada comando */
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #FF4500; /* Borde de comandos */
         }
+
         .command-text {
             flex-grow: 1;
             margin-right: 10px;
         }
+
         .command-actions {
             display: flex;
             gap: 5px;
         }
+
         .copied-message {
             color: #28a745;
             font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            color: #EAEAEA;
+            font-size: 0.8em;
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -231,5 +255,8 @@
             }
         };
     </script>
+    <footer>
+        <p>Hecho por VieraGuti</p>
+    </footer>
 </body>
 </html>
