@@ -81,31 +81,6 @@
             font-weight: bold;
         }
 
-        .item-list {
-            max-height: 200px;
-            overflow-y: auto;
-            width: 100%;
-            background-color: #404040;
-            border-radius: 5px;
-            display: none; /* Oculto por defecto */
-            margin-top: 10px;
-        }
-
-        .item {
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        .item:hover {
-            background-color: #606060;
-        }
-
-        footer {
-            text-align: center;
-            color: #EAEAEA;
-            font-size: 0.8em;
-            margin-top: 40px;
-        }
     </style>
 </head>
 <body>
@@ -117,18 +92,11 @@
         <option value="ammo">Ammo</option>
         <option value="weapons">Armas</option>
         <option value="construction">Items de Construcción</option>
-        <option value="attire">Attire</option>
-        <option value="tools">Tools</option>
-        <option value="medsAndTeas">Meds and Teas</option>
-        <option value="trapsAndMiscellaneous">Traps and Miscellaneous</option>
-        <option value="components">Components</option>
-        <option value="electrical">Electrical</option>
     </select>
 
     <label for="item_list">Seleccionar ítem:</label>
     <select id="item_list" onchange="showItemDetails()">
         <option value="none">Seleccione un ítem</option>
-        <!-- Aquí se añadirán dinámicamente las opciones -->
     </select>
 
     <label for="selected_item_name">Nombre del ítem seleccionado:</label>
@@ -155,7 +123,6 @@
     
     <div id="command_list"></div>
 
-    <!-- Incluir el script externo items.js -->
     <script src="Items.js"></script>
     <script>
         const commands = [];
@@ -233,23 +200,6 @@
                 commandList.appendChild(commandItem);
             });
         }
-
-        function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
-
-                        const commandItem = document.querySelectorAll('.command-item')[index];
-            const copiedMessage = document.createElement('span');
-            copiedMessage.className = 'copied-message';
-            copiedMessage.textContent = ' - Ya copiado';
-            commandItem.appendChild(copiedMessage);
-        }
-
         function deleteCommand(index) {
             commands.splice(index, 1); // Eliminar el comando del array
             localStorage.setItem('commands', JSON.stringify(commands)); // Guardar los comandos actualizados
@@ -269,3 +219,6 @@
     </footer>
 </body>
 </html>
+
+        
+        
