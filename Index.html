@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos - Rust Style</title>
+    <title>Generador de Kits</title>
     <style>
         body {
             font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
@@ -81,6 +81,25 @@
             font-weight: bold;
         }
 
+        .item-list {
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+            background-color: #404040;
+            border-radius: 5px;
+            display: none; /* Oculto por defecto */
+            margin-top: 10px;
+        }
+
+        .item {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .item:hover {
+            background-color: #606060;
+        }
+
         footer {
             text-align: center;
             color: #EAEAEA;
@@ -90,7 +109,7 @@
     </style>
 </head>
 <body>
-    <h1>Generador de Comandos</h1>
+    <h1>Generador de Kits</h1>
 
     <label for="item_category">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
@@ -118,35 +137,26 @@
     <label for="selected_item_id">ID del ítem seleccionado:</label>
     <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
 
-    <label for="display_name">Nombre del ítem (display_name):</label>
-    <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
-    
-    <label for="quantity">Cantidad (quantity):</label>
-    <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
+    <label for="kit_name">Nombre del Kit:</label>
+    <input type="text" id="kit_name" placeholder="Escribe el nombre del kit" required>
+
+    <label for="quantity">Cantidad:</label>
+    <input type="number" id="quantity" min="1" value="1" required>
         
-    <label for="cost">Precio del ítem (cost):</label>
-    <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
-        
-    <label for="server">Servidor (server):</label>
-    <select id="server">
-        <option value="1">Servidor 1</option>
-        <option value="2">Servidor 2</option>
-        <option value="3">Servidor 3</option>
-        <option value="4">Servidor 4</option>
-        <option value="5">Servidor 5</option>
-        <option value="6">Servidor 6</option>
-        <option value="7">Servidor 7</option>
-        <option value="8">Servidor 8</option>
-        <option value="9">Servidor 9</option>
-        <option value="10">Servidor 10</option>
+    <label for="location">Ubicación:</label>
+    <select id="location">
+        <option value="Main">Main</option>
+        <option value="Belt">Belt</option>
+        <option value="Wear">Wear</option>
     </select>
 
-    <button onclick="generateCommand()">Generar Comando</button>
+    <button onclick="addToKit()">Añadir al Kit</button>
+    <button onclick="generateAllCommands()">Generar Todos los Comandos</button>
     
     <div id="command_list"></div>
 
     <!-- Incluir el script externo items.js -->
-    <script src="items.js"></script>
+    <script src="Items.js"></script>
     <script>
         const commands = [];
 
@@ -178,7 +188,7 @@
             const selectedItemId = document.getElementById('selected_item_id');
             const selectedCategory = document.getElementById('item_category').value;
 
-            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
+            const selectedItem = items[selectedCategory]?.find(item => item.id === itemList.value);
 
             if (selectedItem) {
                 selectedItemName.value = selectedItem.name;
@@ -189,19 +199,18 @@
             }
         }
 
-        function generateCommand() {
-            const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('item_list').value;
+        function addToKit() {
+            const kitName = document.getElementById('kit_name').value;
+            const itemId = document.getElementById('selected_item_id').value;
             const quantity = document.getElementById('quantity').value;
-            const cost = document.getElementById('cost').value;
-            const server = document.getElementById('server').value;
+            const location = document.getElementById('location').value;
 
-            if (!displayName || shortName === "none" || !quantity || !cost || !server) {
+            if (!kitName || !itemId || !quantity || !location) {
                 alert('Por favor, completa todos los campos.');
                 return;
             }
 
-            const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
+            const command = `kit add ${kitName} ${itemId} ${quantity} ${location}`;
             commands.push(command);
             localStorage.setItem('commands', JSON.stringify(commands));
             displayCommands();
@@ -234,7 +243,7 @@
             document.body.removeChild(tempInput);
             alert('Comando copiado: ' + commands[index]);
 
-            const commandItem = document.querySelectorAll('.command-item')[index];
+                        const commandItem = document.querySelectorAll('.command-item')[index];
             const copiedMessage = document.createElement('span');
             copiedMessage.className = 'copied-message';
             copiedMessage.textContent = ' - Ya copiado';
@@ -242,16 +251,16 @@
         }
 
         function deleteCommand(index) {
-            commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
+            commands.splice(index, 1); // Eliminar el comando del array
+            localStorage.setItem('commands', JSON.stringify(commands)); // Guardar los comandos actualizados
+            displayCommands(); // Volver a mostrar los comandos
         }
 
         window.onload = function() {
-            const savedCommands = localStorage.getItem('commands');
+            const savedCommands = localStorage.getItem('commands'); // Obtener comandos guardados
             if (savedCommands) {
-                commands.push(...JSON.parse(savedCommands));
-                displayCommands();
+                commands.push(...JSON.parse(savedCommands)); // Cargar los comandos en el array
+                displayCommands(); // Mostrar comandos al cargar la página
             }
         };
     </script>
