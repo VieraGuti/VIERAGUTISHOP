@@ -191,14 +191,16 @@
             const selectedItemImage = document.getElementById('selected_item_image');
             const selectedCategory = document.getElementById('item_category').value;
 
+            // Buscar el ítem seleccionado usando su ID
             const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
 
             if (selectedItem) {
+                // Mostrar el nombre y el ID del ítem seleccionado
                 selectedItemName.value = selectedItem.name;
                 selectedItemId.value = selectedItem.id;
 
-                // Mostrar la imagen del ítem basada en su ID
-                selectedItemImage.src = `path/to/images/${selectedItem.id}.png`; // Asume que las imágenes tienen el mismo nombre que el ID del ítem
+                // Mostrar la imagen del ítem usando la ruta proporcionada en items.js
+                selectedItemImage.src = selectedItem.image + '.png'; // Suponiendo que las imágenes son PNG
                 selectedItemImage.style.display = 'block';
             } else {
                 selectedItemName.value = '';
@@ -233,7 +235,7 @@
 
             commands.forEach((cmd, index) => {
                 const commandItem = document.createElement('div');
-                commandItem.className = 'command-item';
+                commandItem.classList.add('command-item');
                 commandItem.innerHTML = `
                     <span class="command-text">${cmd}</span>
                     <div class="command-actions">
