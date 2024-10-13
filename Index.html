@@ -81,6 +81,15 @@
             font-weight: bold;
         }
 
+        #selected_item_image {
+            display: block;
+            margin: 20px 0;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 2px solid #FF4500;
+        }
+
         footer {
             text-align: center;
             color: #EAEAEA;
@@ -117,6 +126,9 @@
 
     <label for="selected_item_id">ID del ítem seleccionado:</label>
     <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
+
+    <label for="selected_item_image">Imagen del ítem seleccionado:</label>
+    <img id="selected_item_image" src="" alt="Imagen del ítem seleccionado" style="display: none;" />
 
     <label for="display_name">Nombre del ítem (display_name):</label>
     <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
@@ -176,6 +188,7 @@
             const itemList = document.getElementById('item_list');
             const selectedItemName = document.getElementById('selected_item_name');
             const selectedItemId = document.getElementById('selected_item_id');
+            const selectedItemImage = document.getElementById('selected_item_image');
             const selectedCategory = document.getElementById('item_category').value;
 
             const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
@@ -183,9 +196,16 @@
             if (selectedItem) {
                 selectedItemName.value = selectedItem.name;
                 selectedItemId.value = selectedItem.id;
+
+                // Mostrar la imagen del ítem
+                selectedItemImage.src = selectedItem.imageURL;
+                selectedItemImage.style.display = 'block';
             } else {
                 selectedItemName.value = '';
                 selectedItemId.value = '';
+
+                // Ocultar la imagen si no se selecciona un ítem válido
+                selectedItemImage.style.display = 'none';
             }
         }
 
@@ -226,35 +246,25 @@
         }
 
         function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
-
-            const commandItem = document.querySelectorAll('.command-item')[index];
-            const copiedMessage = document.createElement('span');
-            copiedMessage.className = 'copied-message';
-            copiedMessage.textContent = ' - Ya copiado';
-            commandItem.appendChild(copiedMessage);
+            navigator.clipboard.writeText(commands[index]).then(() => {
+                alert('¡Comando copiado!');
+            });
         }
 
         function deleteCommand(index) {
             commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
             displayCommands();
         }
 
-        window.onload = function() {
-            const savedCommands = localStorage.getItem('commands');
-            if (savedCommands) {
-                commands.push(...JSON.parse(savedCommands));
+        document.addEventListener('DOMContentLoaded', function () {
+            const storedCommands = JSON.parse(localStorage.getItem('commands'));
+            if (storedCommands) {
+                commands.push(...storedCommands);
                 displayCommands();
             }
-        };
+        });
     </script>
+
     <footer>
         <p>Hecho por VieraGuti</p>
     </footer>
