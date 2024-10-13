@@ -3,201 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kits Generator</title>
+    <title>Generador de Comandos - Rust Style</title>
     <style>
-        /* Estilos CSS */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
+            background-color: #1e1e1e; /* Fondo oscuro */
+            color: #fff; /* Texto claro */
+            margin: 0;
             padding: 20px;
         }
 
         h1 {
             text-align: center;
+            font-size: 2.5em;
+            color: #FF4500; /* Naranja Rust */
+            text-shadow: 2px 2px 4px #000;
         }
 
-        .inventory {
-            border: 2px solid orange; /* Borde naranja */
-            padding: 10px;
-            margin-bottom: 20px;
+        label {
+            display: block;
+            margin: 10px 0 5px;
         }
 
-        .section-title {
-            font-weight: bold;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-
-        .wear, .main, .belt {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-
-        .slot {
-            width: 50px; /* Tamaño de los slots */
-            height: 50px;
-            border: 1px solid gray;
-            position: relative;
-        }
-
-        .slot img {
+        input, select, button {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            padding: 10px;
+            margin: 5px 0 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333; /* Fondo de campos */
+            color: #fff;
+            font-size: 1em;
         }
 
-        .item-list-container {
-            margin-top: 20px;
-            display: none; /* Ocultar inicialmente */
-        }
-
-        .item-list-container img {
-            width: 50px;
-            height: 50px;
-            margin: 5px;
+        button {
+            background-color: #FF4500; /* Naranja Rust */
+            color: white;
             cursor: pointer;
         }
 
-        .show-items-button {
-            margin: 10px 0;
+        button:hover {
+            background-color: #E53E00; /* Hover más oscuro */
+        }
+
+        #command_list {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #292929; /* Cuadro oscuro */
+            border: 2px solid #FF4500; /* Borde naranja */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Sombra */
+        }
+
+        .command-item {
+            background-color: #444; /* Fondo de cada comando */
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #FF4500; /* Borde de comandos */
+        }
+
+        .command-text {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .command-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .copied-message {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            color: #EAEAEA;
+            font-size: 0.8em;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <h1>Kits Generator</h1>
+    <h1>Generador de Comandos</h1>
 
-    <div class="inventory" id="inventory">
-        <div class="section-title">Wear</div>
-        <div class="wear">
-            <!-- 7 slots for wear -->
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-        </div>
+    <label for="item_category">Seleccionar categoría:</label>
+    <select id="item_category" onchange="updateItemList()">
+        <option value="none">Seleccione una categoría</option>
+        <option value="ammo">Ammo</option>
+        <option value="weapons">Armas</option>
+        <option value="construction">Items de Construcción</option>
+        <option value="attire">Attire</option>
+        <option value="tools">Tools</option>
+        <option value="medsAndTeas">Meds and Teas</option>
+        <option value="trapsAndMiscellaneous">Traps and Miscellaneous</option>
+        <option value="components">Components</option>
+        <option value="electrical">Electrical</option>
+    </select>
 
-        <div class="section-title">Main</div>
-        <div class="main">
-            <!-- 24 slots for main inventory (6x4 grid) -->
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-        </div>
+    <label for="item_list">Seleccionar ítem:</label>
+    <select id="item_list" onchange="showItemDetails()">
+        <option value="none">Seleccione un ítem</option>
+        <!-- Aquí se añadirán dinámicamente las opciones -->
+    </select>
 
-        <div class="section-title">Belt</div>
-        <div class="belt">
-            <!-- 6 slots for belt -->
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-            <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectSlot(this)"></div>
-        </div>
+    <label for="selected_item_name">Nombre del ítem seleccionado:</label>
+    <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
 
-        <!-- Botón para mostrar la lista de ítems -->
-        <button class="show-items-button" onclick="toggleItemList()">Mostrar ítems</button>
+    <label for="selected_item_id">ID del ítem seleccionado:</label>
+    <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
 
-        <!-- Contenedor de la lista de ítems -->
-        <div class="item-list-container" id="itemListContainer">
-            <div class="item-list">
-                <!-- Categoría de ítems -->
-                <h2 class="section-title">Selecciona una categoría:</h2>
-                <button class="category-selector" onclick="showItems('armas')">Armas</button>
-                <button class="category-selector" onclick="showItems('balas')">Balas</button>
-                <button class="category-selector" onclick="showItems('utilidades')">Utilidades</button>
-                <button class="category-selector" onclick="showItems('componentes')">Componentes</button>
-            </div>
+    <label for="display_name">Nombre del ítem (display_name):</label>
+    <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
+    
+    <label for="quantity">Cantidad (quantity):</label>
+    <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
+        
+    <label for="cost">Precio del ítem (cost):</label>
+    <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
+        
+    <label for="server">Servidor (server):</label>
+    <select id="server">
+        <option value="1">Servidor 1</option>
+        <option value="2">Servidor 2</option>
+        <option value="3">Servidor 3</option>
+        <option value="4">Servidor 4</option>
+        <option value="5">Servidor 5</option>
+        <option value="6">Servidor 6</option>
+        <option value="7">Servidor 7</option>
+        <option value="8">Servidor 8</option>
+        <option value="9">Servidor 9</option>
+        <option value="10">Servidor 10</option>
+    </select>
 
-            <div id="itemList"></div>
-        </div>
-    </div>
+    <button onclick="generateCommand()">Generar Comando</button>
+    
+    <div id="command_list"></div>
 
-    <!-- Importar Items.js -->
-    <script src="Items.js"></script>
-
+    <!-- Incluir el script externo items.js -->
+    <script src="items.js"></script>
     <script>
-        function allowDrop(event) {
-            event.preventDefault();
-        }
+        const commands = [];
 
-        function drop(event) {
-            event.preventDefault();
-            const itemId = event.dataTransfer.getData('text/plain');
-            const item = findItemById(itemId);
+        function updateItemList() {
+            const category = document.getElementById('item_category').value;
+            const itemList = document.getElementById('item_list');
 
-            if (item) {
-                const targetSlot = event.target;
-                const slotImage = document.createElement('img');
-                slotImage.src = item.imagen;
-                slotImage.alt = item.nombre;
-                targetSlot.innerHTML = ''; // Limpiar el slot antes de agregar
-                targetSlot.appendChild(slotImage);
-            }
-        }
+            // Limpiar las opciones actuales
+            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
+            document.getElementById('selected_item_name').value = ''; // Limpiar el campo de nombre
+            document.getElementById('selected_item_id').value = ''; // Limpiar el campo de ID
 
-        function findItemById(itemId) {
-            for (const category in Items) {
-                const item = Items[category].find(item => item.id === itemId);
-                if (item) return item;
-            }
-            return null;
-        }
-
-        function selectSlot(slot) {
-            // Aquí puedes implementar la lógica para seleccionar un slot y modificar su contenido
-            alert('Slot seleccionado');
-        }
-
-        function toggleItemList() {
-            const itemListContainer = document.getElementById('itemListContainer');
-            itemListContainer.style.display = itemListContainer.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function showItems(category) {
-            const itemList = document.getElementById('itemList');
-            itemList.innerHTML = ''; // Limpiar la lista actual
-
-            Items[category].forEach(item => {
-                const itemElement = document.createElement('img');
-                itemElement.src = item.imagen;
-                itemElement.alt = item.nombre;
-                itemElement.setAttribute('draggable', 'true');
-                itemElement.addEventListener('dragstart', (event) => {
-                    event.dataTransfer.setData('text/plain', item.id);
+            // Añadir ítems según la categoría seleccionada
+            if (items[category]) {
+                items[category].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    itemList.appendChild(option);
                 });
-                itemList.appendChild(itemElement);
+            } else {
+                console.log("Categoría seleccionada inválida o sin ítems.");
+            }
+        }
+
+        function showItemDetails() {
+            const itemList = document.getElementById('item_list');
+            const selectedItemName = document.getElementById('selected_item_name');
+            const selectedItemId = document.getElementById('selected_item_id');
+            const selectedCategory = document.getElementById('item_category').value;
+
+            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
+
+            if (selectedItem) {
+                selectedItemName.value = selectedItem.name;
+                selectedItemId.value = selectedItem.id;
+            } else {
+                selectedItemName.value = '';
+                selectedItemId.value = '';
+            }
+        }
+
+        function generateCommand() {
+            const displayName = document.getElementById('display_name').value;
+            const shortName = document.getElementById('item_list').value;
+            const quantity = document.getElementById('quantity').value;
+            const cost = document.getElementById('cost').value;
+            const server = document.getElementById('server').value;
+
+            if (!displayName || shortName === "none" || !quantity || !cost || !server) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
+            commands.push(command);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+        }
+
+        function displayCommands() {
+            const commandList = document.getElementById('command_list');
+            commandList.innerHTML = '';
+
+            commands.forEach((cmd, index) => {
+                const commandItem = document.createElement('div');
+                commandItem.className = 'command-item';
+                commandItem.innerHTML = `
+                    <span class="command-text">${cmd}</span>
+                    <div class="command-actions">
+                        <button onclick="copyCommand(${index})">Copiar</button>
+                        <button onclick="deleteCommand(${index})">Eliminar</button>
+                    </div>
+                `;
+                commandList.appendChild(commandItem);
             });
         }
 
-        // Inicializar la lista de ítems oculta
-        toggleItemList();
+        function copyCommand(index) {
+            const tempInput = document.createElement('input');
+            tempInput.value = commands[index];
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Comando copiado: ' + commands[index]);
+
+            const commandItem = document.querySelectorAll('.command-item')[index];
+            const copiedMessage = document.createElement('span');
+            copiedMessage.className = 'copied-message';
+            copiedMessage.textContent = ' - Ya copiado';
+            commandItem.appendChild(copiedMessage);
+        }
+
+        function deleteCommand(index) {
+            commands.splice(index, 1);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+        }
+
+        window.onload = function() {
+            const savedCommands = localStorage.getItem('commands');
+            if (savedCommands) {
+                commands.push(...JSON.parse(savedCommands));
+                displayCommands();
+            }
+        };
     </script>
+    <footer>
+        <p>Hecho por VieraGuti</p>
+    </footer>
 </body>
 </html>
