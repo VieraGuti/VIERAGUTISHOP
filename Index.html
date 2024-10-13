@@ -118,6 +118,9 @@
     <label for="selected_item_id">ID del ítem seleccionado:</label>
     <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
 
+    <label for="item_image">Imagen del ítem seleccionado:</label>
+    <img id="item_image" src="" alt="Imagen del ítem seleccionado" style="display: none; width: 100px; height: auto;"/>
+
     <label for="display_name">Nombre del ítem (display_name):</label>
     <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
     
@@ -158,6 +161,8 @@
             itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
             document.getElementById('selected_item_name').value = ''; // Limpiar el campo de nombre
             document.getElementById('selected_item_id').value = ''; // Limpiar el campo de ID
+            document.getElementById('item_image').src = ''; // Limpiar la imagen
+            document.getElementById('item_image').style.display = 'none'; // Ocultar imagen
 
             // Añadir ítems según la categoría seleccionada
             if (items[category]) {
@@ -176,6 +181,7 @@
             const itemList = document.getElementById('item_list');
             const selectedItemName = document.getElementById('selected_item_name');
             const selectedItemId = document.getElementById('selected_item_id');
+            const itemImage = document.getElementById('item_image');
             const selectedCategory = document.getElementById('item_category').value;
 
             const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
@@ -183,9 +189,13 @@
             if (selectedItem) {
                 selectedItemName.value = selectedItem.name;
                 selectedItemId.value = selectedItem.id;
+                itemImage.src = selectedItem.image; // Asigna la URL de la imagen
+                itemImage.style.display = 'block'; // Muestra la imagen
             } else {
                 selectedItemName.value = '';
                 selectedItemId.value = '';
+                itemImage.src = ''; // Limpia la URL de la imagen
+                itemImage.style.display = 'none'; // Oculta la imagen
             }
         }
 
@@ -213,47 +223,44 @@
 
             commands.forEach((cmd, index) => {
                 const commandItem = document.createElement('div');
-                commandItem.className = 'command-item';
-                commandItem.innerHTML = `
-                    <span class="command-text">${cmd}</span>
-                    <div class="command-actions">
-                        <button onclick="copyCommand(${index})">Copiar</button>
-                        <button onclick="deleteCommand(${index})">Eliminar</button>
-                    </div>
-                `;
+                commandItem.classList.add('command-item');
+
+                const commandText = document.createElement('span');
+                commandText.classList.add('command-text');
+                commandText.textContent = cmd;
+
+                const commandActions = document.createElement('div');
+                commandActions.classList.add('command-actions');
+
+                const copyButton = document.createElement('button');
+                copyButton.textContent = 'Copiar';
+                copyButton.onclick = () => {
+                    navigator.clipboard.writeText(cmd).then(() => {
+                        alert('Comando copiado: ' + cmd);
+                    });
+                };
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Eliminar';
+                deleteButton.onclick = () => {
+                    commands.splice(index, 1);
+                    localStorage.setItem('commands', JSON.stringify(commands));
+                    displayCommands();
+                };
+
+                commandActions.appendChild(copyButton);
+                commandActions.appendChild(deleteButton);
+                commandItem.appendChild(commandText);
+                commandItem.appendChild(commandActions);
                 commandList.appendChild(commandItem);
             });
         }
 
-        function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
-
-            const commandItem = document.querySelectorAll('.command-item')[index];
-            const copiedMessage = document.createElement('span');
-            copiedMessage.className = 'copied-message';
-            copiedMessage.textContent = ' Copiado!';
-            commandItem.appendChild(copiedMessage);
-            setTimeout(() => {
-                commandItem.removeChild(copiedMessage);
-            }, 2000);
-        }
-
-        function deleteCommand(index) {
-            commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
-
-        window.onload = () => {
-            const savedCommands = localStorage.getItem('commands');
-            if (savedCommands) {
-                commands.push(...JSON.parse(savedCommands));
+        // Cargar comandos guardados al iniciar
+        window.onload = function() {
+            const storedCommands = localStorage.getItem('commands');
+            if (storedCommands) {
+                commands.push(...JSON.parse(storedCommands));
                 displayCommands();
             }
         };
