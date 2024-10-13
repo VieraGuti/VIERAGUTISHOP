@@ -325,5 +325,5 @@ const items = {
         { id: 'generator.wind.scrap', name: 'Wind Turbine', image: 'images/electrical/generator.wind.scrap' }
         // No coma al final
     ]
-}; // Cerrar correctamente el objeto 'items'
+}; // Cerrar correctamente el objeto items
 window.items = items;
