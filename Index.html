@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos Rust </title>
+    <title>Generador de Comandos Rust</title>
     <style>
         body {
             font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
@@ -119,7 +119,7 @@
     <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
 
     <label for="item_image">Imagen del ítem seleccionado:</label>
-    <img id="item_image" src="" alt="Imagen del ítem seleccionado" style="display: none; width: 100px; height: auto;"/>
+    <img id="item_image" src="" alt="Imagen del ítem seleccionado" style="display: none; max-width: 100%; height: auto; margin-bottom: 10px;" />
 
     <label for="display_name">Nombre del ítem (display_name):</label>
     <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
@@ -162,7 +162,7 @@
             document.getElementById('selected_item_name').value = ''; // Limpiar el campo de nombre
             document.getElementById('selected_item_id').value = ''; // Limpiar el campo de ID
             document.getElementById('item_image').src = ''; // Limpiar la imagen
-            document.getElementById('item_image').style.display = 'none'; // Ocultar imagen
+            document.getElementById('item_image').style.display = 'none'; // Ocultar la imagen
 
             // Añadir ítems según la categoría seleccionada
             if (items[category]) {
@@ -181,7 +181,7 @@
             const itemList = document.getElementById('item_list');
             const selectedItemName = document.getElementById('selected_item_name');
             const selectedItemId = document.getElementById('selected_item_id');
-            const itemImage = document.getElementById('item_image');
+            const itemImage = document.getElementById('item_image'); // Obtener el elemento de imagen
             const selectedCategory = document.getElementById('item_category').value;
 
             const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
@@ -189,13 +189,14 @@
             if (selectedItem) {
                 selectedItemName.value = selectedItem.name;
                 selectedItemId.value = selectedItem.id;
-                itemImage.src = selectedItem.image; // Asigna la URL de la imagen
-                itemImage.style.display = 'block'; // Muestra la imagen
+
+                // Mostrar la imagen del ítem seleccionado
+                itemImage.src = selectedItem.image; // Asignar la ruta de la imagen
+                itemImage.style.display = 'block'; // Mostrar la imagen
             } else {
                 selectedItemName.value = '';
                 selectedItemId.value = '';
-                itemImage.src = ''; // Limpia la URL de la imagen
-                itemImage.style.display = 'none'; // Oculta la imagen
+                itemImage.style.display = 'none'; // Ocultar la imagen si no hay ítem seleccionado
             }
         }
 
@@ -211,7 +212,7 @@
                 return;
             }
 
-            const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
+            const command = `/additem display_name: ${displayName} short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
             commands.push(command);
             localStorage.setItem('commands', JSON.stringify(commands));
             displayCommands();
@@ -223,28 +224,26 @@
 
             commands.forEach((cmd, index) => {
                 const commandItem = document.createElement('div');
-                commandItem.classList.add('command-item');
+                commandItem.className = 'command-item';
 
-                const commandText = document.createElement('span');
-                commandText.classList.add('command-text');
+                const commandText = document.createElement('div');
+                commandText.className = 'command-text';
                 commandText.textContent = cmd;
 
                 const commandActions = document.createElement('div');
-                commandActions.classList.add('command-actions');
+                commandActions.className = 'command-actions';
 
                 const copyButton = document.createElement('button');
                 copyButton.textContent = 'Copiar';
                 copyButton.onclick = () => {
-                    navigator.clipboard.writeText(cmd).then(() => {
-                        alert('Comando copiado: ' + cmd);
-                    });
+                    navigator.clipboard.writeText(cmd);
+                    alert('Comando copiado: ' + cmd);
                 };
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Eliminar';
                 deleteButton.onclick = () => {
                     commands.splice(index, 1);
-                    localStorage.setItem('commands', JSON.stringify(commands));
                     displayCommands();
                 };
 
@@ -256,18 +255,14 @@
             });
         }
 
-        // Cargar comandos guardados al iniciar
+        // Cargar comandos guardados en el localStorage al iniciar
         window.onload = function() {
-            const storedCommands = localStorage.getItem('commands');
+            const storedCommands = JSON.parse(localStorage.getItem('commands'));
             if (storedCommands) {
-                commands.push(...JSON.parse(storedCommands));
+                commands.push(...storedCommands);
                 displayCommands();
             }
         };
     </script>
-
-    <footer>
-        <p>Hecho por VieraGuti</p>
-    </footer>
 </body>
 </html>
