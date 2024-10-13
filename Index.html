@@ -1,262 +1,264 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos - Rust Style</title>
-    <style>
-        body {
-            font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
-            background-color: #1e1e1e; /* Fondo oscuro */
-            color: #fff; /* Texto claro */
-            margin: 0;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kits Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #282828;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-        h1 {
-            text-align: center;
-            font-size: 2.5em;
-            color: #FF4500; /* Naranja Rust */
-            text-shadow: 2px 2px 4px #000;
-        }
+    h1 {
+      color: orange;
+    }
 
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
+    .inventory {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
 
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333; /* Fondo de campos */
-            color: #fff;
-            font-size: 1em;
-        }
+    .section-title {
+      font-size: 18px;
+      color: orange;
+    }
 
-        button {
-            background-color: #FF4500; /* Naranja Rust */
-            color: white;
-            cursor: pointer;
-        }
+    /* Wear Section (7 slots) */
+    .wear {
+      display: grid;
+      grid-template-columns: repeat(7, 60px);
+      gap: 10px;
+    }
 
-        button:hover {
-            background-color: #E53E00; /* Hover más oscuro */
-        }
+    /* Main Section (6x4 grid) */
+    .main {
+      display: grid;
+      grid-template-columns: repeat(6, 60px);
+      grid-template-rows: repeat(4, 60px);
+      gap: 10px;
+    }
 
-        #command_list {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #292929; /* Cuadro oscuro */
-            border: 2px solid #FF4500; /* Borde naranja */
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Sombra */
-        }
+    /* Belt Section (6 slots) */
+    .belt {
+      display: grid;
+      grid-template-columns: repeat(6, 60px);
+      gap: 10px;
+    }
 
-        .command-item {
-            background-color: #444; /* Fondo de cada comando */
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #FF4500; /* Borde de comandos */
-        }
+    /* Slot styling */
+    .slot {
+      width: 60px;
+      height: 60px;
+      border: 2px solid orange;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
 
-        .command-text {
-            flex-grow: 1;
-            margin-right: 10px;
-        }
+    .slot img {
+      max-width: 100%;
+      max-height: 100%;
+    }
 
-        .command-actions {
-            display: flex;
-            gap: 5px;
-        }
+    /* Quantity display */
+    .quantity {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      font-size: 12px;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
 
-        .copied-message {
-            color: #28a745;
-            font-weight: bold;
-        }
+    /* Item selection list */
+    .item-list {
+      margin-top: 20px;
+    }
 
-        footer {
-            text-align: center;
-            color: #EAEAEA;
-            font-size: 0.8em;
-            margin-top: 40px;
-        }
-    </style>
+    .item-list img {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .item-list img.selected {
+      border-color: orange;
+    }
+
+    .actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .actions button {
+      padding: 5px 10px;
+      background-color: orange;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+  </style>
 </head>
 <body>
-    <h1>Generador de Comandos</h1>
 
-    <label for="item_category">Seleccionar categoría:</label>
-    <select id="item_category" onchange="updateItemList()">
-        <option value="none">Seleccione una categoría</option>
-        <option value="ammo">Ammo</option>
-        <option value="weapons">Armas</option>
-        <option value="construction">Items de Construcción</option>
-        <option value="attire">Attire</option>
-        <option value="tools">Tools</option>
-        <option value="medsAndTeas">Meds and Teas</option>
-        <option value="trapsAndMiscellaneous">Traps and Miscellaneous</option>
-        <option value="components">Components</option>
-        <option value="electrical">Electrical</option>
-    </select>
+  <h1>Kits Generator</h1>
 
-    <label for="item_list">Seleccionar ítem:</label>
-    <select id="item_list" onchange="showItemDetails()">
-        <option value="none">Seleccione un ítem</option>
-        <!-- Aquí se añadirán dinámicamente las opciones -->
-    </select>
+  <div class="inventory">
 
-    <label for="selected_item_name">Nombre del ítem seleccionado:</label>
-    <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
+    <div class="section-title">Wear</div>
+    <div class="wear">
+      <!-- 7 slots for wear -->
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+    </div>
 
-    <label for="selected_item_id">ID del ítem seleccionado:</label>
-    <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
+    <div class="section-title">Main</div>
+    <div class="main">
+      <!-- 24 slots for main inventory (6x4 grid) -->
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
 
-    <label for="display_name">Nombre del ítem (display_name):</label>
-    <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
-    
-    <label for="quantity">Cantidad (quantity):</label>
-    <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
-        
-    <label for="cost">Precio del ítem (cost):</label>
-    <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
-        
-    <label for="server">Servidor (server):</label>
-    <select id="server">
-        <option value="1">Servidor 1</option>
-        <option value="2">Servidor 2</option>
-        <option value="3">Servidor 3</option>
-        <option value="4">Servidor 4</option>
-        <option value="5">Servidor 5</option>
-        <option value="6">Servidor 6</option>
-        <option value="7">Servidor 7</option>
-        <option value="8">Servidor 8</option>
-        <option value="9">Servidor 9</option>
-        <option value="10">Servidor 10</option>
-    </select>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
 
-    <button onclick="generateCommand()">Generar Comando</button>
-    
-    <div id="command_list"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
 
-    <!-- Incluir el script externo items.js -->
-    <script src="items.js"></script>
-    <script>
-        const commands = [];
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+    </div>
 
-        function updateItemList() {
-            const category = document.getElementById('item_category').value;
-            const itemList = document.getElementById('item_list');
+    <div class="section-title">Belt</div>
+    <div class="belt">
+      <!-- 6 slots for belt -->
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+      <div class="slot" onclick="selectSlot(this)"></div>
+    </div>
 
-            // Limpiar las opciones actuales
-            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
-            document.getElementById('selected_item_name').value = ''; // Limpiar el campo de nombre
-            document.getElementById('selected_item_id').value = ''; // Limpiar el campo de ID
+  </div>
 
-            // Añadir ítems según la categoría seleccionada
-            if (items[category]) {
-                items[category].forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.name;
-                    itemList.appendChild(option);
-                });
-            } else {
-                console.log("Categoría seleccionada inválida o sin ítems.");
-            }
+  <div class="item-list">
+    <p>Selecciona un ítem:</p>
+    <div id="item-selection"></div> <!-- Aquí se llenarán los ítems de Items.js -->
+  </div>
+
+  <div class="actions" id="item-actions" style="display:none;">
+    <button onclick="deleteItem()">Borrar</button>
+    <button onclick="editItem()">Editar</button>
+    <button onclick="addQuantity()">Añadir cantidad</button>
+  </div>
+
+  <script src="Items.js"></script>
+  <script>
+    const itemSelection = document.getElementById('item-selection');
+    let selectedSlot = null;
+    let selectedItem = null;
+
+    // Cargar los ítems de Items.js
+    items.forEach(item => {
+      const img = document.createElement('img');
+      img.src = `images/${item.id}.png`;  // Asumiendo que los nombres de las imágenes son el ID del ítem
+      img.alt = item.name;
+      img.onclick = () => selectItem(img, item.id);  // Asociamos la imagen al ítem
+      itemSelection.appendChild(img);
+    });
+
+    function selectSlot(slot) {
+      if (selectedItem) {
+        slot.innerHTML = `<img src="images/${selectedItem}.png" alt="item"><span class="quantity">x1</span>`;
+        slot.dataset.itemId = selectedItem;
+        slot.dataset.quantity = 1; // Asignamos cantidad inicial
+      } else {
+        alert("Primero selecciona un ítem.");
+      }
+    }
+
+    function selectItem(item, itemId) {
+      const items = document.querySelectorAll('.item-list img');
+      items.forEach(img => img.classList.remove('selected'));
+      item.classList.add('selected');
+      selectedItem = itemId;
+    }
+
+    function deleteItem() {
+      if (selectedSlot) {
+        selectedSlot.innerHTML = '';
+        selectedSlot.dataset.itemId = '';
+        selectedSlot.dataset.quantity = '';
+      }
+    }
+
+    function editItem() {
+      if (selectedSlot && selectedSlot.dataset.itemId) {
+        const newId = prompt("Introduce el nuevo ID del ítem:");
+        if (newId) {
+          selectedSlot.dataset.itemId = newId;
+          selectedSlot.innerHTML = `<img src="images/${newId}.png" alt="item"><span class="quantity">x${selectedSlot.dataset.quantity}</span>`;
         }
+      }
+    }
 
-        function showItemDetails() {
-            const itemList = document.getElementById('item_list');
-            const selectedItemName = document.getElementById('selected_item_name');
-            const selectedItemId = document.getElementById('selected_item_id');
-            const selectedCategory = document.getElementById('item_category').value;
-
-            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
-
-            if (selectedItem) {
-                selectedItemName.value = selectedItem.name;
-                selectedItemId.value = selectedItem.id;
-            } else {
-                selectedItemName.value = '';
-                selectedItemId.value = '';
-            }
+    function addQuantity() {
+      if (selectedSlot && selectedSlot.dataset.quantity) {
+        let quantity = parseInt(selectedSlot.dataset.quantity);
+        const newQuantity = prompt("Introduce la cantidad adicional:", 1);
+        if (newQuantity) {
+          quantity += parseInt(newQuantity);
+          selectedSlot.dataset.quantity = quantity;
+          selectedSlot.querySelector('.quantity').textContent = `x${quantity}`;
         }
+      }
+    }
 
-        function generateCommand() {
-            const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('item_list').value;
-            const quantity = document.getElementById('quantity').value;
-            const cost = document.getElementById('cost').value;
-            const server = document.getElementById('server').value;
+    function selectSlot(slot) {
+      selectedSlot = slot;
+      document.getElementById('item-actions').style.display = 'flex';
+    }
+  </script>
 
-            if (!displayName || shortName === "none" || !quantity || !cost || !server) {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
-
-            const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
-            commands.push(command);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
-
-        function displayCommands() {
-            const commandList = document.getElementById('command_list');
-            commandList.innerHTML = '';
-
-            commands.forEach((cmd, index) => {
-                const commandItem = document.createElement('div');
-                commandItem.className = 'command-item';
-                commandItem.innerHTML = `
-                    <span class="command-text">${cmd}</span>
-                    <div class="command-actions">
-                        <button onclick="copyCommand(${index})">Copiar</button>
-                        <button onclick="deleteCommand(${index})">Eliminar</button>
-                    </div>
-                `;
-                commandList.appendChild(commandItem);
-            });
-        }
-
-        function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
-
-            const commandItem = document.querySelectorAll('.command-item')[index];
-            const copiedMessage = document.createElement('span');
-            copiedMessage.className = 'copied-message';
-            copiedMessage.textContent = ' - Ya copiado';
-            commandItem.appendChild(copiedMessage);
-        }
-
-        function deleteCommand(index) {
-            commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
-
-        window.onload = function() {
-            const savedCommands = localStorage.getItem('commands');
-            if (savedCommands) {
-                commands.push(...JSON.parse(savedCommands));
-                displayCommands();
-            }
-        };
-    </script>
-    <footer>
-        <p>Hecho por VieraGuti</p>
-    </footer>
 </body>
 </html>
