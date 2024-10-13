@@ -3,48 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rust4Admin</title>
+    <title>Generador de Comandos - Rust Style</title>
     <style>
         body {
-            background-color: #1E1E1E; /* Color de fondo oscuro */
-            color: #FFFFFF; /* Color de texto blanco */
-            font-family: 'Arial', sans-serif; /* Fuente */
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
+            font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
+            background-color: #1e1e1e; /* Fondo oscuro */
+            color: #fff; /* Texto claro */
+            margin: 0;
             padding: 20px;
         }
 
-        header {
+        h1 {
             text-align: center;
-        }
-
-        button {
-            background-color: #FF4500; /* Color naranja */
-            color: #FFFFFF;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
-        }
-
-        button:hover {
-            background-color: #FF6347; /* Color más claro al pasar el mouse */
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        form {
-            margin-top: 20px;
-            background-color: #2E2E2E; /* Fondo para formularios */
-            padding: 15px;
-            border-radius: 5px;
+            font-size: 2.5em;
+            color: #FF4500; /* Naranja Rust */
+            text-shadow: 2px 2px 4px #000;
         }
 
         label {
@@ -52,143 +25,238 @@
             margin: 10px 0 5px;
         }
 
-        input, select {
+        input, select, button {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #FFFFFF; /* Borde blanco */
+            margin: 5px 0 10px;
+            border: none;
             border-radius: 5px;
-            background-color: #3E3E3E; /* Fondo de entrada */
-            color: #FFFFFF; /* Color de texto */
+            background-color: #333; /* Fondo de campos */
+            color: #fff;
+            font-size: 1em;
         }
 
-        input[type="number"] {
-            -moz-appearance: textfield; /* Elimina los flechas de número en Firefox */
+        button {
+            background-color: #FF4500; /* Naranja Rust */
+            color: white;
+            cursor: pointer;
         }
 
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none; /* Elimina los flechas de número en Chrome */
-            margin: 0; /* Sin margen */
+        button:hover {
+            background-color: #E53E00; /* Hover más oscuro */
+        }
+
+        #command_list {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #292929; /* Cuadro oscuro */
+            border: 2px solid #FF4500; /* Borde naranja */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Sombra */
+        }
+
+        .command-item {
+            background-color: #444; /* Fondo de cada comando */
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #FF4500; /* Borde de comandos */
+        }
+
+        .command-text {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .command-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .copied-message {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            color: #EAEAEA;
+            font-size: 0.8em;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Rust4Admin</h1>
-        </header>
-        <main>
-            <section class="options">
-                <button id="createKitsBtn">Crear Kits</button>
-                <button id="createItemsBtn">Crear Items para la Shop</button>
-            </section>
-            <section id="formSection" style="display: none;">
-                <!-- Aquí irán los formularios de crear kits o items -->
-            </section>
-        </main>
-        <footer>
-            <p>Hecho por [Tu Nombre]</p>
-        </footer>
-    </div>
+    <h1>Generador de Comandos</h1>
+
+    <label for="item_category">Seleccionar categoría:</label>
+    <select id="item_category" onchange="updateItemList()">
+        <option value="none">Seleccione una categoría</option>
+        <option value="ammo">Ammo</option>
+        <option value="weapons">Armas</option>
+        <option value="construction">Items de Construcción</option>
+        <option value="attire">Attire</option>
+        <option value="tools">Tools</option>
+        <option value="medsAndTeas">Meds and Teas</option>
+        <option value="trapsAndMiscellaneous">Traps and Miscellaneous</option>
+        <option value="components">Components</option>
+        <option value="electrical">Electrical</option>
+    </select>
+
+    <label for="item_list">Seleccionar ítem:</label>
+    <select id="item_list" onchange="showItemDetails()">
+        <option value="none">Seleccione un ítem</option>
+        <!-- Aquí se añadirán dinámicamente las opciones -->
+    </select>
+
+    <label for="selected_item_name">Nombre del ítem seleccionado:</label>
+    <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
+
+    <label for="selected_item_id">ID del ítem seleccionado:</label>
+    <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
+
+    <label for="display_name">Nombre del ítem (display_name):</label>
+    <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
+    
+    <label for="quantity">Cantidad (quantity):</label>
+    <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
+        
+    <label for="cost">Precio del ítem (cost):</label>
+    <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
+        
+    <label for="server">Servidor (server):</label>
+    <select id="server">
+        <option value="1">Servidor 1</option>
+        <option value="2">Servidor 2</option>
+        <option value="3">Servidor 3</option>
+        <option value="4">Servidor 4</option>
+        <option value="5">Servidor 5</option>
+        <option value="6">Servidor 6</option>
+        <option value="7">Servidor 7</option>
+        <option value="8">Servidor 8</option>
+        <option value="9">Servidor 9</option>
+        <option value="10">Servidor 10</option>
+    </select>
+
+    <button onclick="generateCommand()">Generar Comando</button>
+    
+    <div id="command_list"></div>
+
+    <!-- Incluir el script externo items.js -->
+    <script src="items.js"></script>
     <script>
-        document.getElementById("createKitsBtn").onclick = function() {
-            showKitsForm();
+        const commands = [];
+
+        function updateItemList() {
+            const category = document.getElementById('item_category').value;
+            const itemList = document.getElementById('item_list');
+
+            // Limpiar las opciones actuales
+            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
+            document.getElementById('selected_item_name').value = ''; // Limpiar el campo de nombre
+            document.getElementById('selected_item_id').value = ''; // Limpiar el campo de ID
+
+            // Añadir ítems según la categoría seleccionada
+            if (items[category]) {
+                items[category].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    itemList.appendChild(option);
+                });
+            } else {
+                console.log("Categoría seleccionada inválida o sin ítems.");
+            }
+        }
+
+        function showItemDetails() {
+            const itemList = document.getElementById('item_list');
+            const selectedItemName = document.getElementById('selected_item_name');
+            const selectedItemId = document.getElementById('selected_item_id');
+            const selectedCategory = document.getElementById('item_category').value;
+
+            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
+
+            if (selectedItem) {
+                selectedItemName.value = selectedItem.name;
+                selectedItemId.value = selectedItem.id;
+            } else {
+                selectedItemName.value = '';
+                selectedItemId.value = '';
+            }
+        }
+
+        function generateCommand() {
+            const displayName = document.getElementById('display_name').value;
+            const shortName = document.getElementById('item_list').value;
+            const quantity = document.getElementById('quantity').value;
+            const cost = document.getElementById('cost').value;
+            const server = document.getElementById('server').value;
+
+            if (!displayName || shortName === "none" || !quantity || !cost || !server) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
+            commands.push(command);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+        }
+
+        function displayCommands() {
+            const commandList = document.getElementById('command_list');
+            commandList.innerHTML = '';
+
+            commands.forEach((cmd, index) => {
+                const commandItem = document.createElement('div');
+                commandItem.className = 'command-item';
+                commandItem.innerHTML = `
+                    <span class="command-text">${cmd}</span>
+                    <div class="command-actions">
+                        <button onclick="copyCommand(${index})">Copiar</button>
+                        <button onclick="deleteCommand(${index})">Eliminar</button>
+                    </div>
+                `;
+                commandList.appendChild(commandItem);
+            });
+        }
+
+        function copyCommand(index) {
+            const tempInput = document.createElement('input');
+            tempInput.value = commands[index];
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Comando copiado: ' + commands[index]);
+
+            const commandItem = document.querySelectorAll('.command-item')[index];
+            const copiedMessage = document.createElement('span');
+            copiedMessage.className = 'copied-message';
+            copiedMessage.textContent = ' - Ya copiado';
+            commandItem.appendChild(copiedMessage);
+        }
+
+        function deleteCommand(index) {
+            commands.splice(index, 1);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+        }
+
+        window.onload = function() {
+            const savedCommands = localStorage.getItem('commands');
+            if (savedCommands) {
+                commands.push(...JSON.parse(savedCommands));
+                displayCommands();
+            }
         };
-
-        document.getElementById("createItemsBtn").onclick = function() {
-            showItemsForm();
-        };
-
-        function showKitsForm() {
-            document.getElementById("formSection").innerHTML = `
-                <h2>Crear Kits</h2>
-                <form id="kitsForm">
-                    <label for="kitName">Nombre del Kit:</label>
-                    <input type="text" id="kitName" required>
-                    <label for="itemID">ID del Ítem:</label>
-                    <input type="text" id="itemID" required>
-                    <label for="quantity">Cantidad:</label>
-                    <input type="number" id="quantity" required>
-                    <label for="server">Server:</label>
-                    <select id="server">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                    </select>
-                    <button type="submit">Generar Comando</button>
-                </form>
-            `;
-            document.getElementById("formSection").style.display = 'block';
-            document.getElementById("kitsForm").onsubmit = function(event) {
-                event.preventDefault(); // Evitar envío del formulario
-                generateKitsCommand();
-            };
-        }
-
-        function showItemsForm() {
-            document.getElementById("formSection").innerHTML = `
-                <h2>Crear Ítems para la Shop</h2>
-                <form id="itemsForm">
-                    <label for="categoryName">Nombre de la Categoría:</label>
-                    <input type="text" id="categoryName" required>
-                    <label for="itemDisplayName">Nombre a Mostrar:</label>
-                    <input type="text" id="itemDisplayName" required>
-                    <label for="shortName">ID del Ítem:</label>
-                    <input type="text" id="shortName" required>
-                    <label for="quantity">Cantidad:</label>
-                    <input type="number" id="quantityItems" required>
-                    <label for="cost">Costo:</label>
-                    <input type="number" id="cost" required>
-                    <button type="submit">Generar Comando</button>
-                </form>
-            `;
-            document.getElementById("formSection").style.display = 'block';
-            document.getElementById("itemsForm").onsubmit = function(event) {
-                event.preventDefault(); // Evitar envío del formulario
-                generateItemsCommand();
-            };
-        }
-
-        function generateKitsCommand() {
-            const kitName = document.getElementById("kitName").value;
-            const itemID = document.getElementById("itemID").value;
-            const quantity = document.getElementById("quantity").value;
-            const server = document.getElementById("server").value;
-
-            const command = `Kit add "${kitName}" "${itemID}" ${quantity} 1 "Server: ${server}"`;
-            alert(`Comando generado: ${command}`);
-            // Aquí puedes añadir la lógica para copiar el comando al portapapeles
-        }
-
-        function generateItemsCommand() {
-            const categoryName = document.getElementById("categoryName").value;
-            const itemDisplayName = document.getElementById("itemDisplayName").value;
-            const shortName = document.getElementById("shortName").value;
-            const quantity = document.getElementById("quantityItems").value;
-            const cost = document.getElementById("cost").value;
-
-            const command = `/admin-shop-add-item category: "${categoryName}" display_name: "${itemDisplayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost}`;
-            alert(`Comando generado: ${command}`);
-            // Aquí puedes añadir la lógica para copiar el comando al portapapeles
-        }
     </script>
+    <footer>
+        <p>Hecho por VieraGuti</p>
+    </footer>
 </body>
 </html>
