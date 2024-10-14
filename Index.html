@@ -144,7 +144,7 @@
     
     <div id="command_list"></div>
 
-    <script src="items.js"></script>
+    <script src="Items.js"></script> <!-- Asegúrate de que la ruta sea correcta -->
     <script>
         const commands = [];
 
@@ -179,7 +179,7 @@
                     imageItem.className = 'image-item';
 
                     const img = document.createElement('img');
-                    img.src = item.image; // Usa la ruta de la imagen
+                    img.src = item.image + '.png'; // Ruta de la imagen con .png
                     img.alt = item.name;
                     img.onclick = () => {
                         document.getElementById('selected_item_name').value = item.name; // Muestra el nombre
