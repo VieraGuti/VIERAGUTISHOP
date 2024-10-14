@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos - Rust Style</title>
+    <title>Kits Generator Rust</title>
     <style>
         body {
             font-family: 'Press Start 2P', sans-serif;
@@ -18,14 +18,11 @@
             color: #FF4500;
             text-shadow: 2px 2px 4px #000;
         }
-        label {
+        label, select, input, button {
             display: block;
-            margin: 10px 0 5px;
-        }
-        input, select, button {
             width: 100%;
             padding: 10px;
-            margin: 5px 0 10px;
+            margin: 5px 0;
             border: none;
             border-radius: 5px;
             background-color: #333;
@@ -34,21 +31,19 @@
         }
         button {
             background-color: #FF4500;
-            color: white;
             cursor: pointer;
         }
         button:hover {
             background-color: #E53E00;
         }
-        #command_list {
+        #command_list, #kit_list {
             margin-top: 20px;
             padding: 10px;
             background-color: #292929;
             border: 2px solid #FF4500;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
         }
-        .command-item {
+        .kit-item {
             background-color: #444;
             padding: 10px;
             margin: 5px 0;
@@ -58,13 +53,9 @@
             align-items: center;
             border: 1px solid #FF4500;
         }
-        .command-text {
-            flex-grow: 1;
-            margin-right: 10px;
-        }
-        .copied-message {
-            color: #28a745;
-            font-weight: bold;
+        .kit-actions {
+            display: flex;
+            gap: 5px;
         }
         footer {
             text-align: center;
@@ -75,85 +66,98 @@
     </style>
 </head>
 <body>
-    <h1>Generador de Comandos</h1>
+    <h1>Kits Generator</h1>
 
-    <label for="category_name">Seleccionar categoría:</label>
+    <h2>Agregar Categoría</h2>
+    <label for="category_name">Nombre de la categoría:</label>
+    <input type="text" id="category_name" placeholder="Nombre de la categoría">
+    
+    <label for="category_type">Tipo de categoría:</label>
+    <select id="category_type">
+        <option value="kits">Kits</option>
+        <option value="items">Items</option>
+    </select>
+
+    <button onclick="addCategory()">Agregar Categoría</button>
+
+    <h2>Generar Kit</h2>
+    <label for="item_category">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
-        <option value="none">Seleccione una categoría</option>
-        <!-- Aquí se añadirán dinámicamente las opciones -->
+        <option value="none">Seleccionar categoría</option>
+        <!-- Aquí se añadirán dinámicamente las categorías -->
     </select>
 
     <label for="item_list">Seleccionar ítem:</label>
     <select id="item_list" onchange="showItemDetails()">
-        <option value="none">Seleccione un ítem</option>
+        <option value="none">Seleccionar ítem</option>
+        <!-- Aquí se añadirán dinámicamente los ítems -->
     </select>
 
-    <label for="selected_item_name">Nombre del ítem seleccionado:</label>
-    <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
+    <label for="kit_name">Nombre del kit o seleccionar KaosBot:</label>
+    <input type="text" id="kit_name" placeholder="Nombre del kit">
 
-    <label for="selected_item_id">ID del ítem seleccionado:</label>
-    <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
-
-    <label for="display_name">Nombre del ítem (display_name):</label>
-    <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
-    
     <label for="quantity">Cantidad:</label>
-    <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
-        
-    <label for="cost">Precio del ítem:</label>
-    <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
-        
-    <label for="server">Servidor:</label>
-    <select id="server">
-        <option value="1">Servidor 1</option>
-        <option value="2">Servidor 2</option>
-        <option value="3">Servidor 3</option>
-        <option value="4">Servidor 4</option>
-        <option value="5">Servidor 5</option>
-        <option value="6">Servidor 6</option>
-        <option value="7">Servidor 7</option>
-        <option value="8">Servidor 8</option>
-        <option value="9">Servidor 9</option>
-        <option value="10">Servidor 10</option>
+    <input type="number" id="quantity" placeholder="Cantidad" min="1" value="1">
+
+    <label for="location">Ubicación:</label>
+    <select id="location">
+        <option value="Main">Main</option>
+        <option value="Wear">Wear</option>
+        <option value="Belt">Belt</option>
     </select>
 
-    <button onclick="generateCommand()">Generar Comando</button>
+    <button onclick="generateCommand()">Agregar Kit</button>
     
+    <div id="kit_list"></div>
     <div id="command_list"></div>
 
-    <script src="items.js"></script>
+    <script src="Items.js"></script>
     <script>
         const commands = [];
+        const categories = {};
 
-        window.onload = function() {
-            loadCategories();
-            const savedCommands = localStorage.getItem('commands');
-            if (savedCommands) {
-                commands.push(...JSON.parse(savedCommands));
-                displayCommands();
+        function addCategory() {
+            const categoryName = document.getElementById('category_name').value;
+            const categoryType = document.getElementById('category_type').value;
+
+            if (!categoryName) {
+                alert('Por favor, introduce un nombre para la categoría.');
+                return;
             }
-        };
 
-        function loadCategories() {
-            const categorySelect = document.getElementById('item_category');
-            Object.keys(items).forEach(category => {
-                const option = document.createElement('option');
-                option.value = category;
-                option.textContent = category;
-                categorySelect.appendChild(option);
-            });
+            if (!categories[categoryType]) {
+                categories[categoryType] = [];
+            }
+
+            categories[categoryType].push({ name: categoryName, items: [] });
+
+            // Actualiza el dropdown de categorías
+            updateCategoryDropdown();
+            document.getElementById('category_name').value = ''; // Reiniciar el campo
+        }
+
+        function updateCategoryDropdown() {
+            const categoryDropdown = document.getElementById('item_category');
+            categoryDropdown.innerHTML = '<option value="none">Seleccionar categoría</option>';
+            for (const type in categories) {
+                categories[type].forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.name;
+                    option.textContent = category.name;
+                    categoryDropdown.appendChild(option);
+                });
+            }
         }
 
         function updateItemList() {
             const category = document.getElementById('item_category').value;
             const itemList = document.getElementById('item_list');
+            itemList.innerHTML = '<option value="none">Seleccionar ítem</option>';
 
-            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
-            document.getElementById('selected_item_name').value = '';
-            document.getElementById('selected_item_id').value = '';
-
-            if (items[category]) {
-                items[category].forEach(item => {
+            // Aquí deberías cargar los ítems de la categoría seleccionada
+            const selectedCategory = Object.values(categories).flat().find(cat => cat.name === category);
+            if (selectedCategory) {
+                selectedCategory.items.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item.id;
                     option.textContent = item.name;
@@ -164,35 +168,28 @@
 
         function showItemDetails() {
             const itemList = document.getElementById('item_list');
-            const selectedItemName = document.getElementById('selected_item_name');
-            const selectedItemId = document.getElementById('selected_item_id');
-            const selectedCategory = document.getElementById('item_category').value;
+            const selectedItemId = itemList.value;
 
-            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
-
+            // Aquí deberías mostrar detalles del ítem seleccionado
+            const selectedItem = items.flat().find(item => item.id === selectedItemId);
             if (selectedItem) {
-                selectedItemName.value = selectedItem.name;
-                selectedItemId.value = selectedItem.id;
-            } else {
-                selectedItemName.value = '';
-                selectedItemId.value = '';
+                // Lógica para mostrar detalles del ítem (imagen, descripción, etc.)
             }
         }
 
         function generateCommand() {
-            const displayName = document.getElementById('display_name').value;
+            const kitName = document.getElementById('kit_name').value;
             const shortName = document.getElementById('item_list').value;
             const quantity = document.getElementById('quantity').value;
-            const cost = document.getElementById('cost').value;
-            const server = document.getElementById('server').value;
+            const location = document.getElementById('location').value;
 
-            if (!displayName || shortName === "none" || !quantity || !cost || !server) {
+            if (!kitName || shortName === "none" || !quantity) {
                 alert('Por favor, completa todos los campos.');
                 return;
             }
 
-            const command = `/admin-shop-add-kit server: "${server}" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: "${cost}"`;
-            commands.push(command);
+            const command = `Kit add "${kitName}" "${shortName}" ${quantity} 1 "${location}"`;
+            commands.push({ name: kitName, commands: [command] });
             localStorage.setItem('commands', JSON.stringify(commands));
             displayCommands();
         }
@@ -201,35 +198,25 @@
             const commandList = document.getElementById('command_list');
             commandList.innerHTML = '';
 
-            commands.forEach((cmd, index) => {
-                const commandItem = document.createElement('div');
-                commandItem.className = 'command-item';
-                commandItem.innerHTML = `
-                    <span class="command-text">${cmd}</span>
-                    <div class="command-actions">
-                        <button onclick="copyCommand(${index})">Copiar</button>
-                        <button onclick="deleteCommand(${index})">Eliminar</button>
-                    </div>
+            commands.forEach(kit => {
+                const kitItem = document.createElement('div');
+                kitItem.className = 'kit-item';
+                kitItem.innerHTML = `
+                    <strong>${kit.name}</strong>
+                    <div>${kit.commands.join('<br>')}</div>
                 `;
-                commandList.appendChild(commandItem);
+                commandList.appendChild(kitItem);
             });
         }
 
-        function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
-        }
-
-        function deleteCommand(index) {
-            commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
+        // Cargar ítems desde Items.js al cargar la página
+        window.onload = function() {
+            const savedCommands = localStorage.getItem('commands');
+            if (savedCommands) {
+                commands.push(...JSON.parse(savedCommands));
+                displayCommands();
+            }
+        };
     </script>
     <footer>
         <p>Hecho por VieraGuti</p>
