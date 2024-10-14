@@ -62,15 +62,23 @@
             flex-grow: 1;
             margin-right: 10px;
         }
-        .item-image {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .item-image.selected {
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
             border: 2px solid #FF4500;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .image-item {
+            margin: 5px;
+            text-align: center;
+        }
+        .image-item img {
+            width: 80px; /* Ajusta el tamaño de las imágenes */
+            cursor: pointer;
+            border: 1px solid #FF4500;
+            border-radius: 5px;
         }
         footer {
             text-align: center;
@@ -97,9 +105,13 @@
     <label for="item_category">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
         <option value="none">Seleccione una categoría</option>
+        <!-- Aquí se añadirán dinámicamente las opciones -->
     </select>
 
-    <div id="item_images"></div>
+    <label for="item_list">Seleccionar ítem:</label>
+    <select id="item_list" onchange="showItemDetails()">
+        <option value="none">Seleccione un ítem</option>
+    </select>
 
     <label for="selected_item_name">Nombre del ítem seleccionado:</label>
     <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
@@ -134,6 +146,8 @@
     
     <div id="command_list"></div>
 
+    <div class="image-container" id="image_container"></div>
+
     <script src="items.js"></script>
     <script>
         const commands = [];
@@ -159,42 +173,54 @@
 
         function updateItemList() {
             const category = document.getElementById('item_category').value;
-            const itemImagesDiv = document.getElementById('item_images');
+            const itemList = document.getElementById('item_list');
+            const imageContainer = document.getElementById('image_container');
 
-            itemImagesDiv.innerHTML = ''; // Limpiar imágenes
+            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
             document.getElementById('selected_item_name').value = '';
             document.getElementById('selected_item_id').value = '';
 
+            imageContainer.innerHTML = ''; // Limpia las imágenes anteriores
+
             if (items[category]) {
                 items[category].forEach(item => {
-                    // Crear imagen del ítem
-                    const img = document.createElement('img');
-                    img.src = item.image; // Asegúrate de que cada item tenga una propiedad "image"
-                    img.alt = item.name;
-                    img.className = 'item-image';
-                    img.onclick = () => selectItem(item); // Asignar evento de clic
-                    img.dataset.id = item.id; // Almacenar ID en el elemento
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    itemList.appendChild(option);
 
-                    itemImagesDiv.appendChild(img);
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'image-item';
+
+                    const img = document.createElement('img');
+                    img.src = item.image; // Usa la ruta de la imagen
+                    img.alt = item.name;
+                    img.onclick = () => {
+                        itemList.value = item.id; // Selecciona el ítem al hacer clic
+                        showItemDetails(); // Muestra los detalles del ítem
+                    };
+
+                    imageItem.appendChild(img);
+                    imageContainer.appendChild(imageItem);
                 });
             }
         }
 
-        function selectItem(item) {
+        function showItemDetails() {
+            const itemList = document.getElementById('item_list');
             const selectedItemName = document.getElementById('selected_item_name');
             const selectedItemId = document.getElementById('selected_item_id');
-            const itemImages = document.querySelectorAll('.item-image');
+            const selectedCategory = document.getElementById('item_category').value;
 
-            // Deseleccionar todas las imágenes
-            itemImages.forEach(img => img.classList.remove('selected'));
+            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
 
-            // Seleccionar la imagen actual
-            const imgElement = document.querySelector(`img[data-id="${item.id}"]`);
-            imgElement.classList.add('selected');
-
-            // Actualizar campos de texto
-            selectedItemName.value = item.name;
-            selectedItemId.value = item.id;
+            if (selectedItem) {
+                selectedItemName.value = selectedItem.name;
+                selectedItemId.value = selectedItem.id;
+            } else {
+                selectedItemName.value = '';
+                selectedItemId.value = '';
+            }
         }
 
         function generateCategoryCommand() {
@@ -214,7 +240,7 @@
 
         function generateCommand() {
             const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('selected_item_id').value;
+            const shortName = document.getElementById('item_list').value;
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
@@ -227,9 +253,9 @@
 
             let command;
             if (categoryType === "Items") {
-                command = `/admin-shop-add-item server: "${server}" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" short_name: "${shortName}" quantity: "${quantity}" cost: "${cost}"`;
+                command = `/admin-shop-add-item server: ${server} category: "${document.getElementById('item_category').value}" display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost}`;
             } else if (categoryType === "Kits") {
-                command = `/admin-shop-add-kit server: "el 1 al 10" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: "${cost}"`;
+                command = `/admin-shop-add-kit server: "el 1 al 10" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: ${cost}`;
             }
 
             commands.push(command);
