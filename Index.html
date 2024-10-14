@@ -66,10 +66,11 @@
             width: 50px;
             height: 50px;
             margin-right: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
         }
-        .item-option {
-            display: flex;
-            align-items: center;
+        .item-image.selected {
+            border: 2px solid #FF4500;
         }
         footer {
             text-align: center;
@@ -96,11 +97,6 @@
     <label for="item_category">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
         <option value="none">Seleccione una categoría</option>
-    </select>
-
-    <label for="item_list">Seleccionar ítem:</label>
-    <select id="item_list" onchange="showItemDetails()">
-        <option value="none">Seleccione un ítem</option>
     </select>
 
     <div id="item_images"></div>
@@ -163,49 +159,42 @@
 
         function updateItemList() {
             const category = document.getElementById('item_category').value;
-            const itemList = document.getElementById('item_list');
             const itemImagesDiv = document.getElementById('item_images');
 
-            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
             itemImagesDiv.innerHTML = ''; // Limpiar imágenes
             document.getElementById('selected_item_name').value = '';
             document.getElementById('selected_item_id').value = '';
 
             if (items[category]) {
                 items[category].forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.name;
-                    itemList.appendChild(option);
-
                     // Crear imagen del ítem
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'item-option';
                     const img = document.createElement('img');
-                    img.src = item.image; // Asegúrate de que cada item tenga una propiedad "image" con la URL
+                    img.src = item.image; // Asegúrate de que cada item tenga una propiedad "image"
                     img.alt = item.name;
                     img.className = 'item-image';
-                    itemDiv.appendChild(img);
-                    itemImagesDiv.appendChild(itemDiv);
+                    img.onclick = () => selectItem(item); // Asignar evento de clic
+                    img.dataset.id = item.id; // Almacenar ID en el elemento
+
+                    itemImagesDiv.appendChild(img);
                 });
             }
         }
 
-        function showItemDetails() {
-            const itemList = document.getElementById('item_list');
+        function selectItem(item) {
             const selectedItemName = document.getElementById('selected_item_name');
             const selectedItemId = document.getElementById('selected_item_id');
-            const selectedCategory = document.getElementById('item_category').value;
+            const itemImages = document.querySelectorAll('.item-image');
 
-            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
+            // Deseleccionar todas las imágenes
+            itemImages.forEach(img => img.classList.remove('selected'));
 
-            if (selectedItem) {
-                selectedItemName.value = selectedItem.name;
-                selectedItemId.value = selectedItem.id;
-            } else {
-                selectedItemName.value = '';
-                selectedItemId.value = '';
-            }
+            // Seleccionar la imagen actual
+            const imgElement = document.querySelector(`img[data-id="${item.id}"]`);
+            imgElement.classList.add('selected');
+
+            // Actualizar campos de texto
+            selectedItemName.value = item.name;
+            selectedItemId.value = item.id;
         }
 
         function generateCategoryCommand() {
@@ -225,7 +214,7 @@
 
         function generateCommand() {
             const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('item_list').value;
+            const shortName = document.getElementById('selected_item_id').value;
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
