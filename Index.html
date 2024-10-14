@@ -109,9 +109,7 @@
     </select>
 
     <label for="item_list">Seleccionar ítem:</label>
-    <select id="item_list" onchange="showItemDetails()">
-        <option value="none">Seleccione un ítem</option>
-    </select>
+    <div class="image-container" id="image_container"></div>
 
     <label for="selected_item_name">Nombre del ítem seleccionado:</label>
     <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
@@ -146,8 +144,6 @@
     
     <div id="command_list"></div>
 
-    <div class="image-container" id="image_container"></div>
-
     <script src="items.js"></script>
     <script>
         const commands = [];
@@ -173,22 +169,12 @@
 
         function updateItemList() {
             const category = document.getElementById('item_category').value;
-            const itemList = document.getElementById('item_list');
             const imageContainer = document.getElementById('image_container');
-
-            itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
-            document.getElementById('selected_item_name').value = '';
-            document.getElementById('selected_item_id').value = '';
 
             imageContainer.innerHTML = ''; // Limpia las imágenes anteriores
 
             if (items[category]) {
                 items[category].forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.name;
-                    itemList.appendChild(option);
-
                     const imageItem = document.createElement('div');
                     imageItem.className = 'image-item';
 
@@ -196,30 +182,13 @@
                     img.src = item.image; // Usa la ruta de la imagen
                     img.alt = item.name;
                     img.onclick = () => {
-                        itemList.value = item.id; // Selecciona el ítem al hacer clic
-                        showItemDetails(); // Muestra los detalles del ítem
+                        document.getElementById('selected_item_name').value = item.name; // Muestra el nombre
+                        document.getElementById('selected_item_id').value = item.id; // Muestra la ID
                     };
 
                     imageItem.appendChild(img);
                     imageContainer.appendChild(imageItem);
                 });
-            }
-        }
-
-        function showItemDetails() {
-            const itemList = document.getElementById('item_list');
-            const selectedItemName = document.getElementById('selected_item_name');
-            const selectedItemId = document.getElementById('selected_item_id');
-            const selectedCategory = document.getElementById('item_category').value;
-
-            const selectedItem = items[selectedCategory].find(item => item.id === itemList.value);
-
-            if (selectedItem) {
-                selectedItemName.value = selectedItem.name;
-                selectedItemId.value = selectedItem.id;
-            } else {
-                selectedItemName.value = '';
-                selectedItemId.value = '';
             }
         }
 
@@ -240,13 +209,13 @@
 
         function generateCommand() {
             const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('item_list').value;
+            const shortName = document.getElementById('selected_item_id').value; // Usar la ID seleccionada
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
             const categoryType = document.getElementById('category_type').value;
 
-            if (!displayName || shortName === "none" || !quantity || !cost || !server) {
+            if (!displayName || !shortName || !quantity || !cost || !server) {
                 alert('Por favor, completa todos los campos.');
                 return;
             }
