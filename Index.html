@@ -6,81 +6,70 @@
     <title>Generador de Comandos - Rust Style</title>
     <style>
         body {
-            font-family: 'Press Start 2P', sans-serif; /* Estilo gaming */
-            background-color: #1e1e1e; /* Fondo oscuro */
-            color: #fff; /* Texto claro */
+            font-family: 'Press Start 2P', sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
             margin: 0;
             padding: 20px;
         }
-
         h1 {
             text-align: center;
             font-size: 2.5em;
-            color: #FF4500; /* Naranja Rust */
+            color: #FF4500;
             text-shadow: 2px 2px 4px #000;
         }
-
         label {
             display: block;
             margin: 10px 0 5px;
         }
-
         input, select, button {
             width: 100%;
             padding: 10px;
             margin: 5px 0 10px;
             border: none;
             border-radius: 5px;
-            background-color: #333; /* Fondo de campos */
+            background-color: #333;
             color: #fff;
             font-size: 1em;
         }
-
         button {
-            background-color: #FF4500; /* Naranja Rust */
+            background-color: #FF4500;
             color: white;
             cursor: pointer;
         }
-
         button:hover {
-            background-color: #E53E00; /* Hover más oscuro */
+            background-color: #E53E00;
         }
-
         #command_list {
             margin-top: 20px;
             padding: 10px;
-            background-color: #292929; /* Cuadro oscuro */
-            border: 2px solid #FF4500; /* Borde naranja */
+            background-color: #292929;
+            border: 2px solid #FF4500;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Sombra */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
         }
-
         .command-item {
-            background-color: #444; /* Fondo de cada comando */
+            background-color: #444;
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #FF4500; /* Borde de comandos */
+            border: 1px solid #FF4500;
         }
-
         .command-text {
             flex-grow: 1;
             margin-right: 10px;
         }
-
         .command-actions {
             display: flex;
             gap: 5px;
         }
-
         .copied-message {
             color: #28a745;
             font-weight: bold;
         }
-
         footer {
             text-align: center;
             color: #EAEAEA;
@@ -92,24 +81,26 @@
 <body>
     <h1>Generador de Comandos</h1>
 
+    <label for="category_name">Nombre de la categoría:</label>
+    <input type="text" id="category_name" placeholder="Escribe el nombre de la categoría">
+
+    <label for="category_type">Tipo de categoría:</label>
+    <select id="category_type">
+        <option value="Kits">Kits</option>
+        <option value="Items">Items</option>
+    </select>
+
+    <button onclick="addCategory()">Agregar Categoría</button>
+
     <label for="item_category">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
         <option value="none">Seleccione una categoría</option>
-        <option value="ammo">Ammo</option>
-        <option value="weapons">Armas</option>
-        <option value="construction">Items de Construcción</option>
-        <option value="attire">Attire</option>
-        <option value="tools">Tools</option>
-        <option value="medsAndTeas">Meds and Teas</option>
-        <option value="trapsAndMiscellaneous">Traps and Miscellaneous</option>
-        <option value="components">Components</option>
-        <option value="electrical">Electrical</option>
+        <!-- Aquí se añadirán dinámicamente las opciones -->
     </select>
 
     <label for="item_list">Seleccionar ítem:</label>
     <select id="item_list" onchange="showItemDetails()">
         <option value="none">Seleccione un ítem</option>
-        <!-- Aquí se añadirán dinámicamente las opciones -->
     </select>
 
     <label for="selected_item_name">Nombre del ítem seleccionado:</label>
@@ -121,13 +112,13 @@
     <label for="display_name">Nombre del ítem (display_name):</label>
     <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
     
-    <label for="quantity">Cantidad (quantity):</label>
+    <label for="quantity">Cantidad:</label>
     <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
         
-    <label for="cost">Precio del ítem (cost):</label>
+    <label for="cost">Precio del ítem:</label>
     <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
         
-    <label for="server">Servidor (server):</label>
+    <label for="server">Servidor:</label>
     <select id="server">
         <option value="1">Servidor 1</option>
         <option value="2">Servidor 2</option>
@@ -145,21 +136,36 @@
     
     <div id="command_list"></div>
 
-    <!-- Incluir el script externo items.js -->
     <script src="items.js"></script>
     <script>
         const commands = [];
+
+        function addCategory() {
+            const categoryName = document.getElementById('category_name').value;
+            const categoryType = document.getElementById('category_type').value;
+
+            if (!categoryName) {
+                alert('Por favor, completa el nombre de la categoría.');
+                return;
+            }
+
+            // Aquí se puede agregar la lógica para almacenar categorías
+            const categoryCommand = `/admin-shop-add-category category_name: "${categoryName}" category_type: "${categoryType}" role: any`;
+            commands.push(categoryCommand);
+            localStorage.setItem('commands', JSON.stringify(commands));
+            displayCommands();
+            alert(`Categoría "${categoryName}" añadida.`);
+            document.getElementById('category_name').value = ''; // Limpiar el campo
+        }
 
         function updateItemList() {
             const category = document.getElementById('item_category').value;
             const itemList = document.getElementById('item_list');
 
-            // Limpiar las opciones actuales
             itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
-            document.getElementById('selected_item_name').value = ''; // Limpiar el campo de nombre
-            document.getElementById('selected_item_id').value = ''; // Limpiar el campo de ID
+            document.getElementById('selected_item_name').value = '';
+            document.getElementById('selected_item_id').value = '';
 
-            // Añadir ítems según la categoría seleccionada
             if (items[category]) {
                 items[category].forEach(item => {
                     const option = document.createElement('option');
@@ -201,7 +207,7 @@
                 return;
             }
 
-            const command = `/additem display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost} server: ${server}`;
+            const command = `/admin-shop-add-kit server: "${server}" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: "${cost}"`;
             commands.push(command);
             localStorage.setItem('commands', JSON.stringify(commands));
             displayCommands();
