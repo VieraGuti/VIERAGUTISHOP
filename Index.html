@@ -62,9 +62,14 @@
             flex-grow: 1;
             margin-right: 10px;
         }
-        .copied-message {
-            color: #28a745;
-            font-weight: bold;
+        .item-image {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .item-option {
+            display: flex;
+            align-items: center;
         }
         footer {
             text-align: center;
@@ -91,13 +96,14 @@
     <label for="item_category">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
         <option value="none">Seleccione una categoría</option>
-        <!-- Aquí se añadirán dinámicamente las opciones -->
     </select>
 
     <label for="item_list">Seleccionar ítem:</label>
     <select id="item_list" onchange="showItemDetails()">
         <option value="none">Seleccione un ítem</option>
     </select>
+
+    <div id="item_images"></div>
 
     <label for="selected_item_name">Nombre del ítem seleccionado:</label>
     <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
@@ -158,8 +164,10 @@
         function updateItemList() {
             const category = document.getElementById('item_category').value;
             const itemList = document.getElementById('item_list');
+            const itemImagesDiv = document.getElementById('item_images');
 
             itemList.innerHTML = '<option value="none">Seleccione un ítem</option>';
+            itemImagesDiv.innerHTML = ''; // Limpiar imágenes
             document.getElementById('selected_item_name').value = '';
             document.getElementById('selected_item_id').value = '';
 
@@ -169,6 +177,16 @@
                     option.value = item.id;
                     option.textContent = item.name;
                     itemList.appendChild(option);
+
+                    // Crear imagen del ítem
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item-option';
+                    const img = document.createElement('img');
+                    img.src = item.image; // Asegúrate de que cada item tenga una propiedad "image" con la URL
+                    img.alt = item.name;
+                    img.className = 'item-image';
+                    itemDiv.appendChild(img);
+                    itemImagesDiv.appendChild(itemDiv);
                 });
             }
         }
@@ -211,7 +229,7 @@
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
-            const categoryType = document.getElementById('category_type').value; // Obtener el tipo de categoría
+            const categoryType = document.getElementById('category_type').value;
 
             if (!displayName || shortName === "none" || !quantity || !cost || !server) {
                 alert('Por favor, completa todos los campos.');
@@ -222,7 +240,7 @@
             if (categoryType === "Items") {
                 command = `/admin-shop-add-item server: "${server}" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" short_name: "${shortName}" quantity: "${quantity}" cost: "${cost}"`;
             } else if (categoryType === "Kits") {
-                command = `/admin-shop-add-kit server: "del 1 al 10" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: "${cost}"`;
+                command = `/admin-shop-add-kit server: "el 1 al 10" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: "${cost}"`;
             }
 
             commands.push(command);
