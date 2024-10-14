@@ -62,10 +62,6 @@
             flex-grow: 1;
             margin-right: 10px;
         }
-        .command-actions {
-            display: flex;
-            gap: 5px;
-        }
         .copied-message {
             color: #28a745;
             font-weight: bold;
@@ -81,18 +77,7 @@
 <body>
     <h1>Generador de Comandos</h1>
 
-    <label for="category_name">Nombre de la categoría:</label>
-    <input type="text" id="category_name" placeholder="Escribe el nombre de la categoría">
-
-    <label for="category_type">Tipo de categoría:</label>
-    <select id="category_type">
-        <option value="Kits">Kits</option>
-        <option value="Items">Items</option>
-    </select>
-
-    <button onclick="addCategory()">Agregar Categoría</button>
-
-    <label for="item_category">Seleccionar categoría:</label>
+    <label for="category_name">Seleccionar categoría:</label>
     <select id="item_category" onchange="updateItemList()">
         <option value="none">Seleccione una categoría</option>
         <!-- Aquí se añadirán dinámicamente las opciones -->
@@ -140,22 +125,23 @@
     <script>
         const commands = [];
 
-        function addCategory() {
-            const categoryName = document.getElementById('category_name').value;
-            const categoryType = document.getElementById('category_type').value;
-
-            if (!categoryName) {
-                alert('Por favor, completa el nombre de la categoría.');
-                return;
+        window.onload = function() {
+            loadCategories();
+            const savedCommands = localStorage.getItem('commands');
+            if (savedCommands) {
+                commands.push(...JSON.parse(savedCommands));
+                displayCommands();
             }
+        };
 
-            // Aquí se puede agregar la lógica para almacenar categorías
-            const categoryCommand = `/admin-shop-add-category category_name: "${categoryName}" category_type: "${categoryType}" role: any`;
-            commands.push(categoryCommand);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-            alert(`Categoría "${categoryName}" añadida.`);
-            document.getElementById('category_name').value = ''; // Limpiar el campo
+        function loadCategories() {
+            const categorySelect = document.getElementById('item_category');
+            Object.keys(items).forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
         }
 
         function updateItemList() {
@@ -173,8 +159,6 @@
                     option.textContent = item.name;
                     itemList.appendChild(option);
                 });
-            } else {
-                console.log("Categoría seleccionada inválida o sin ítems.");
             }
         }
 
@@ -239,12 +223,6 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
             alert('Comando copiado: ' + commands[index]);
-
-            const commandItem = document.querySelectorAll('.command-item')[index];
-            const copiedMessage = document.createElement('span');
-            copiedMessage.className = 'copied-message';
-            copiedMessage.textContent = ' - Ya copiado';
-            commandItem.appendChild(copiedMessage);
         }
 
         function deleteCommand(index) {
@@ -252,14 +230,6 @@
             localStorage.setItem('commands', JSON.stringify(commands));
             displayCommands();
         }
-
-        window.onload = function() {
-            const savedCommands = localStorage.getItem('commands');
-            if (savedCommands) {
-                commands.push(...JSON.parse(savedCommands));
-                displayCommands();
-            }
-        };
     </script>
     <footer>
         <p>Hecho por VieraGuti</p>
