@@ -18,7 +18,6 @@ const items = {
         { id: 'ammo.nailgun.nails', name: 'Nailgun Nails', image: 'images/ammo/ammo.nailgun.nails.png' },
         { id: 'ammo.pistol', name: 'Pistol Bullet', image: 'images/ammo/ammo.pistol.png' },
         { id: 'ammo.rocket.basic', name: 'Rocket', image: 'images/ammo/ammo.rocket.basic.png' },
-        { id: 'ammo.rocket.basic', name: 'Rocket', image: 'images/ammo/ammo.rocket.basic.png' },
         { id: 'arrow.wooden', name: 'Arrow', image: 'images/ammo/arrow.wooden.png' },
         { id: 'arrow.hv', name: 'HV Arrow', image: 'images/ammo/arrow.hv.png' },
         { id: 'arrow.fire', name: 'Fire Arrow', image: 'images/ammo/arrow.fire.png' },
