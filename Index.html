@@ -123,8 +123,20 @@
         
     <label for="server">Servidor:</label>
     <select id="server">
-        <!-- Generar las opciones del 1 al 10 dinámicamente -->
+        <option value="1">Servidor 1</option>
+        <option value="2">Servidor 2</option>
+        <option value="3">Servidor 3</option>
+        <option value="4">Servidor 4</option>
+        <option value="5">Servidor 5</option>
+        <option value="6">Servidor 6</option>
+        <option value="7">Servidor 7</option>
+        <option value="8">Servidor 8</option>
+        <option value="9">Servidor 9</option>
+        <option value="10">Servidor 10</option>
     </select>
+
+    <label for="kit_category">Categoría del kit:</label>
+    <input type="text" id="kit_category" placeholder="Escribe la categoría del kit">
 
     <button onclick="generateCommand()">Generar Comando</button>
     
@@ -136,7 +148,6 @@
 
         window.onload = function() {
             loadCategories();
-            loadServerOptions(); // Nueva función para cargar opciones de servidor
             const savedCommands = localStorage.getItem('commands');
             if (savedCommands) {
                 commands.push(...JSON.parse(savedCommands));
@@ -152,16 +163,6 @@
                 option.textContent = category;
                 categorySelect.appendChild(option);
             });
-        }
-
-        function loadServerOptions() {
-            const serverSelect = document.getElementById('server');
-            for (let i = 1; i <= 10; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `Servidor ${i}`;
-                serverSelect.appendChild(option);
-            }
         }
 
         function updateItemList() {
@@ -210,18 +211,18 @@
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
-            const categoryType = document.getElementById('category_type').value;
+            const kitCategory = document.getElementById('kit_category').value; // Obtener la categoría del kit
 
-            if (!displayName || !shortName || !quantity || !cost || !server) {
+            if (!displayName || !shortName || !quantity || !cost || !kitCategory) {
                 alert('Por favor, completa todos los campos.');
                 return;
             }
 
             let command;
-            if (categoryType === "Items") {
-                command = `/admin-shop-add-item server: ${server} category: "${document.getElementById('item_category').value}" display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost}`;
-            } else if (categoryType === "Kits") {
-                command = `/admin-shop-add-kit server: ${server} category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: ${cost}`;
+            if (document.getElementById('category_type').value === "Items") {
+                command = `/admin-shop-add-item server: ${server} category: "${kitCategory}" display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost}`;
+            } else if (document.getElementById('category_type').value === "Kits") {
+                command = `/admin-shop-add-kit server: ${server} category: "${kitCategory}" display_name: "${displayName}" kit_name: "${shortName}" cost: ${cost}`;
             }
 
             commands.push(command);
