@@ -174,11 +174,8 @@
                     imageItem.className = 'image-item';
 
                     const img = document.createElement('img');
-                    img.src = `${item.image}.png`; // Asegúrate de que la ruta sea correcta
-                    img.alt = item.name;
-                    img.onerror = () => {
-                        img.src = 'images/default-image.png'; // Imagen por defecto en caso de error
-                    };
+                    img.src = `images/${item.id}.png`; // Usar la ID para la ruta de la imagen
+                    img.alt = item.id; // Mostramos la ID en el alt
                     img.onclick = () => {
                         document.getElementById('selected_item_name').value = item.name; // Muestra el nombre
                         document.getElementById('selected_item_id').value = item.id; // Muestra la ID
@@ -269,4 +266,3 @@
     </footer>
 </body>
 </html>
-
