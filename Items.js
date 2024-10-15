@@ -193,7 +193,6 @@ tools: [
     { id: 'chainsaw', name: 'Chainsaw', image: 'images/tools/chainsaw.png' },
     { id: 'flare', name: 'Flare', image: 'images/tools/flare.png' },
     { id: 'flashlight.held', name: 'Flashlight', image: 'images/tools/flashlight.held.png' },
-    { id: 'flint', name: 'Flint', image: 'images/tools/flint.png' },
     { id: 'hatchet', name: 'Hatchet', image: 'images/tools/hatchet.png' },
     { id: 'metal.detector', name: 'Metal Detector', image: 'images/tools/metal.detector.png' },
     { id: 'pickaxe', name: 'Pickaxe', image: 'images/tools/pickaxe.png' },
