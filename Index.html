@@ -163,29 +163,30 @@
         }
 
         function updateItemList() {
-            const category = document.getElementById('item_category').value;
-            const imageContainer = document.getElementById('image_container');
+    const category = document.getElementById('item_category').value;
+    const imageContainer = document.getElementById('image_container');
 
-            imageContainer.innerHTML = ''; // Limpia las imágenes anteriores
+    imageContainer.innerHTML = ''; // Limpia las imágenes anteriores
 
-            if (items[category]) {
-                items[category].forEach(item => {
-                    const imageItem = document.createElement('div');
-                    imageItem.className = 'image-item';
+    if (items[category]) {
+        items[category].forEach(item => {
+            const imageItem = document.createElement('div');
+            imageItem.className = 'image-item';
 
-                    const img = document.createElement('img');
-                    img.src = item.image + '.png'; // Ruta de la imagen con .png
-                    img.alt = item.name;
-                    img.onclick = () => {
-                        document.getElementById('selected_item_name').value = item.name; // Muestra el nombre
-                        document.getElementById('selected_item_id').value = item.id; // Muestra la ID
-                    };
+            const img = document.createElement('img');
+            img.src = item.image + '.png'; // Ruta de la imagen con .png
+            img.alt = item.name;
+            img.onclick = () => {
+                document.getElementById('selected_item_name').value = item.name; // Muestra el nombre
+                document.getElementById('selected_item_id').value = item.id; // Muestra la ID
+            };
 
-                    imageItem.appendChild(img);
-                    imageContainer.appendChild(imageItem);
-                });
-            }
-        }
+            imageItem.appendChild(img);
+            imageContainer.appendChild(imageItem);
+        });
+    }
+}
+
 
         function generateCategoryCommand() {
             const categoryName = document.getElementById('category_name').value;
