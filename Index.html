@@ -217,9 +217,9 @@
 
             let command;
             if (categoryType === "Items") {
-                command = `/admin-shop-add-item server: ${server} category: "${document.getElementById('item_category').value}" display_name: "${displayName}" short_name: "${shortName}" quantity: ${quantity} cost: ${cost}`;
+                command = `/admin-shop-add-item server: ${server} category: ${document.getElementById('item_category').value} display_name: ${displayName} short_name: ${shortName} quantity: ${quantity} cost: ${cost}`;
             } else if (categoryType === "Kits") {
-                command = `/admin-shop-add-kit server: "el 1 al 10" category: "${document.getElementById('item_category').value}" display_name: "${displayName}" kit_name: "${shortName}" cost: ${cost}`;
+                command = `/admin-shop-add-kit server: el 1 al 10 category: ${document.getElementById('item_category').value} display_name: ${displayName} kit_name: ${shortName} cost: ${cost}`;
             }
 
             commands.push(command);
