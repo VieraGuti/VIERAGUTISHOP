@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Comandos - Rust Style</title>
+    <title>Command Generator Rust</title>
     <style>
         body {
             font-family: 'Press Start 2P', sans-serif;
@@ -53,7 +53,7 @@
             text-align: center;
         }
         .image-item img {
-            width: 80px; /* Ajusta el tamaño de las imágenes */
+            width: 80px; 
             cursor: pointer;
             border: 1px solid #FF4500;
             border-radius: 5px;
@@ -84,31 +84,31 @@
     </style>
 </head>
 <body>
-    <h1>Generador de Comandos</h1>
+    <h1>Command Generator Rust</h1>
 
-    <label for="item_category">Seleccionar categoría:</label>
+    <label for="item_category">Select category:</label>
     <select id="item_category" onchange="updateItemList()">
-        <option value="none">Seleccione una categoría</option>
-        <!-- Aquí se añadirán dinámicamente las opciones -->
+        <option value="none">Select a category</option>
+       
     </select>
 
-    <label for="item_list">Seleccionar ítem:</label>
+    <label for="item_list">Select item:</label>
     <div class="image-container" id="image_container"></div>
 
-    <label for="selected_item_name">Nombre del ítem seleccionado:</label>
-    <input type="text" id="selected_item_name" readonly placeholder="Nombre del ítem seleccionado" />
+    <label for="selected_item_name">Name of selected item:</label>
+    <input type="text" id="selected_item_name" readonly placeholder="Name of selected item" />
 
     <label for="selected_item_id">ID del ítem seleccionado:</label>
-    <input type="text" id="selected_item_id" readonly placeholder="ID del ítem seleccionado" />
+    <input type="text" id="selected_item_id" readonly placeholder="ID of the selected item" />
 
-    <label for="display_name">Nombre del ítem (display_name):</label>
-    <input type="text" id="display_name" placeholder="Escribe el nombre del ítem">
+    <label for="display_name">Item name (display_name):</label>
+    <input type="text" id="display_name" placeholder="Write the name of the item">
     
-    <label for="quantity">Cantidad:</label>
-    <input type="number" id="quantity" placeholder="Escribe la cantidad" min="1" value="1">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" placeholder="Write the amount" min="1" value="1">
         
-    <label for="cost">Precio del ítem:</label>
-    <input type="number" id="cost" placeholder="Escribe el precio del ítem" min="0">
+    <label for="cost">Item price:</label>
+    <input type="number" id="cost" placeholder="Write the price of the item" min="0">
         
     <label for="server">Servidor:</label>
     <select id="server">
@@ -124,10 +124,10 @@
         <option value="10">Servidor 10</option>
     </select>
 
-    <label for="kit_category">Categoría del kit:</label>
-    <input type="text" id="kit_category" placeholder="Escribe la categoría del kit">
+    <label for="kit_category">Kit Category:</label>
+    <input type="text" id="kit_category" placeholder="Write the kit category">
 
-    <button onclick="generateCommand()">Generar Comando</button>
+    <button onclick="generateCommand()">Generate Command</button>
     
     <div id="command_list"></div>
 
@@ -162,7 +162,7 @@
             const category = document.getElementById('item_category').value;
             const imageContainer = document.getElementById('image_container');
 
-            imageContainer.innerHTML = ''; // Limpia las imágenes anteriores
+            imageContainer.innerHTML = ''; 
 
             if (items[category]) {
                 items[category].forEach(item => {
@@ -170,11 +170,11 @@
                     imageItem.className = 'image-item';
 
                     const img = document.createElement('img');
-                    img.src = `images/${item.id}.png`; // Usar la ID para la ruta de la imagen
-                    img.alt = item.id; // Mostramos la ID en el alt
+                    img.src = `images/${item.id}.png`; 
+                    img.alt = item.id; 
                     img.onclick = () => {
-                        document.getElementById('selected_item_name').value = item.name; // Muestra el nombre
-                        document.getElementById('selected_item_id').value = item.id; // Muestra la ID
+                        document.getElementById('selected_item_name').value = item.name;
+                        document.getElementById('selected_item_id').value = item.id; 
                     };
 
                     imageItem.appendChild(img);
@@ -185,14 +185,14 @@
 
         function generateCommand() {
             const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('selected_item_id').value; // Usar la ID seleccionada
+            const shortName = document.getElementById('selected_item_id').value; 
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
-            const kitCategory = document.getElementById('kit_category').value; // Obtener la categoría del kit
+            const kitCategory = document.getElementById('kit_category').value; 
 
             if (!displayName || !shortName || !quantity || !cost || !kitCategory) {
-                alert('Por favor, completa todos los campos.');
+                alert('Please complete all fields.');
                 return;
             }
 
@@ -214,8 +214,8 @@
                 commandItem.innerHTML = `
                     <span class="command-text">${cmd}</span>
                     <div class="command-actions">
-                        <button onclick="copyCommand(${index})">Copiar</button>
-                        <button onclick="deleteCommand(${index})">Eliminar</button>
+                        <button onclick="copyCommand(${index})">Copy</button>
+                        <button onclick="deleteCommand(${index})">Delete</button>
                     </div>
                 `;
                 commandList.appendChild(commandItem);
