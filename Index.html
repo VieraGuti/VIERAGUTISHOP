@@ -124,8 +124,8 @@
         <option value="10">Servidor 10</option>
     </select>
 
-    <label for="shop_category">/shop Category:</label>
-    <input type="text" id="shop_category" placeholder="Write the /shop category">
+    <label for="kit_category">/Shop Category:</label>
+    <input type="text" id="kit_category" placeholder="Write the /shop category">
 
     <button onclick="generateCommand()">Generate Command</button>
     
@@ -189,7 +189,7 @@
             const quantity = document.getElementById('quantity').value;
             const cost = document.getElementById('cost').value;
             const server = document.getElementById('server').value;
-            const kitCategory = document.getElementById('shop_category').value; 
+            const kitCategory = document.getElementById('kit_category').value; 
 
             if (!displayName || !shortName || !quantity || !cost || !kitCategory) {
                 alert('Please complete all fields.');
@@ -197,7 +197,7 @@
             }
 
             let command;
-            command = `/admin-shop-add-item server: ${server} category: ${shopCategory} display_name: ${displayName} short_name: ${shortName} quantity: ${quantity} cost: ${cost}`;
+            command = `/admin-shop-add-item server: ${server} category: ${kitCategory} display_name: ${displayName} short_name: ${shortName} quantity: ${quantity} cost: ${cost}`;
 
             commands.push(command);
             localStorage.setItem('commands', JSON.stringify(commands));
