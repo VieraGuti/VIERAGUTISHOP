@@ -5,83 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Command Generator Rust</title>
     <style>
-        body {
-            font-family: 'Press Start 2P', sans-serif;
-            background-color: #1e1e1e;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            font-size: 2.5em;
-            color: #FF4500;
-            text-shadow: 2px 2px 4px #000;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: #fff;
-            font-size: 1em;
-        }
-        button {
-            background-color: #FF4500;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #E53E00;
-        }
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 10px;
-            border: 2px solid #FF4500;
-            border-radius: 10px;
-            padding: 10px;
-        }
-        .image-item {
-            margin: 5px;
-            text-align: center;
-        }
-        .image-item img {
-            width: 80px; 
-            cursor: pointer;
-            border: 1px solid #FF4500;
-            border-radius: 5px;
-        }
-        #command_list {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #292929;
-            border: 2px solid #FF4500;
-            border-radius: 10px;
-        }
-        .command-item {
-            background-color: #444;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #FF4500;
-        }
-        footer {
-            text-align: center;
-            color: #EAEAEA;
-            font-size: 0.8em;
-            margin-top: 40px;
-        }
-    </style>
+    body {
+        font-family: 'Press Start 2P', sans-serif;
+        background-color: #1e1e1e;
+        color: #fff;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+        color: #FF4500;
+        text-shadow: 2px 2px 4px #000;
+    }
+    
+    label {
+        display: block;
+        margin: 10px 0 5px;
+    }
+    
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        font-size: 1em;
+    }
+    
+    button {
+        background-color: #FF4500;
+        color: white;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #E53E00;
+    }
+    
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        border: 2px solid #FF4500;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    
+    .image-item {
+        margin: 5px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s; /* Transiciones suaves */
+    }
+    
+    .image-item img {
+        width: 80px; 
+        cursor: pointer;
+        border: 1px solid #FF4500;
+        border-radius: 5px;
+        transition: transform 0.2s; /* Transición para el zoom */
+    }
+
+    /* Efecto de resalte al seleccionar un ítem */
+    .image-item.selected {
+        transform: scale(1.1); /* Aumenta el tamaño */
+        box-shadow: 0 0 10px rgba(255, 69, 0, 0.7); /* Sombra para resaltar */
+    }
+
+    /* Efecto de zoom en la imagen al seleccionar */
+    .image-item.selected img {
+        transform: scale(1.1); /* Aumenta el tamaño de la imagen */
+    }
+
+    #command_list {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #292929;
+        border: 2px solid #FF4500;
+        border-radius: 10px;
+    }
+    
+    .command-item {
+        background-color: #444;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #FF4500;
+    }
+    
+    footer {
+        text-align: center;
+        color: #EAEAEA;
+        font-size: 0.8em;
+        margin-top: 40px;
+    }
+</style>
+
 </head>
 <body>
     <h1>Command Generator Rust</h1>
@@ -134,6 +159,7 @@
     <script src="Items.js"></script>
 <script>
     const commands = [];
+    let savedCategory = ''; // Variable para almacenar la categoría guardada
 
     window.onload = function() {
         console.log(items); 
@@ -143,6 +169,12 @@
         if (savedCommands) {
             commands.push(...JSON.parse(savedCommands));
             displayCommands();
+        }
+
+        // Verificar si hay una categoría guardada al cargar la página
+        const savedCategoryFromStorage = localStorage.getItem('savedCategory');
+        if (savedCategoryFromStorage) {
+            savedCategory = savedCategoryFromStorage;
         }
     };
 
@@ -156,88 +188,96 @@
         });
     }
 
+    function updateItemList() {
+        const category = document.getElementById('item_category').value;
+        const imageContainer = document.getElementById('image_container');
 
+        imageContainer.innerHTML = ''; 
 
-        function updateItemList() {
-            const category = document.getElementById('item_category').value;
-            const imageContainer = document.getElementById('image_container');
+        if (items[category]) {
+            items[category].forEach(item => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item';
 
-            imageContainer.innerHTML = ''; 
+                const img = document.createElement('img');
+                img.src = `images/${item.id}.png`; 
+                img.alt = item.id; 
+                img.onclick = () => {
+                    document.getElementById('selected_item_name').value = item.name;
+                    document.getElementById('selected_item_id').value = item.id; 
+                };
 
-            if (items[category]) {
-                items[category].forEach(item => {
-                    const imageItem = document.createElement('div');
-                    imageItem.className = 'image-item';
-
-                    const img = document.createElement('img');
-                    img.src = `images/${item.id}.png`; 
-                    img.alt = item.id; 
-                    img.onclick = () => {
-                        document.getElementById('selected_item_name').value = item.name;
-                        document.getElementById('selected_item_id').value = item.id; 
-                    };
-
-                    imageItem.appendChild(img);
-                    imageContainer.appendChild(imageItem);
-                });
-            }
-        }
-
-        function generateCommand() {
-            const displayName = document.getElementById('display_name').value;
-            const shortName = document.getElementById('selected_item_id').value; 
-            const quantity = document.getElementById('quantity').value;
-            const cost = document.getElementById('cost').value;
-            const server = document.getElementById('server').value;
-            const kitCategory = document.getElementById('kit_category').value; 
-
-            if (!displayName || !shortName || !quantity || !cost || !kitCategory) {
-                alert('Please complete all fields.');
-                return;
-            }
-
-            let command;
-            command = `/admin-shop-add-item server: ${server} category: ${kitCategory} display_name: ${displayName} short_name: ${shortName} quantity: ${quantity} cost: ${cost}`;
-
-            commands.push(command);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
-        }
-
-        function displayCommands() {
-            const commandList = document.getElementById('command_list');
-            commandList.innerHTML = '';
-
-            commands.forEach((cmd, index) => {
-                const commandItem = document.createElement('div');
-                commandItem.className = 'command-item';
-                commandItem.innerHTML = `
-                    <span class="command-text">${cmd}</span>
-                    <div class="command-actions">
-                        <button onclick="copyCommand(${index})">Copy</button>
-                        <button onclick="deleteCommand(${index})">Delete</button>
-                    </div>
-                `;
-                commandList.appendChild(commandItem);
+                imageItem.appendChild(img);
+                imageContainer.appendChild(imageItem);
             });
         }
+    }
 
-        function copyCommand(index) {
-            const tempInput = document.createElement('input');
-            tempInput.value = commands[index];
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert('Comando copiado: ' + commands[index]);
+    function generateCommand() {
+        const displayName = document.getElementById('display_name').value;
+        const shortName = document.getElementById('selected_item_id').value; 
+        const quantity = document.getElementById('quantity').value;
+        const cost = document.getElementById('cost').value;
+        const server = document.getElementById('server').value; 
+        const kitCategory = document.getElementById('kit_category').value; 
+
+        if (!displayName || !shortName || !quantity || !cost || !kitCategory) {
+            alert('Please complete all fields.');
+            return;
         }
 
-        function deleteCommand(index) {
-            commands.splice(index, 1);
-            localStorage.setItem('commands', JSON.stringify(commands));
-            displayCommands();
+        // Pregunta si desea guardar la categoría de /shop
+        if (!savedCategory) {
+            const confirmSave = confirm("Would you like to save the category of /shop?");
+            if (confirmSave) {
+                savedCategory = kitCategory;
+                localStorage.setItem('savedCategory', savedCategory);
+            }
         }
-    </script>
+
+        let command;
+        command = `/admin-shop-add-item server: ${server} category: ${kitCategory} display_name: ${displayName} short_name: ${shortName} quantity: ${quantity} cost: ${cost}`;
+
+        commands.push(command);
+        localStorage.setItem('commands', JSON.stringify(commands));
+        displayCommands();
+    }
+
+    function displayCommands() {
+        const commandList = document.getElementById('command_list');
+        commandList.innerHTML = '';
+
+        commands.forEach((cmd, index) => {
+            const commandItem = document.createElement('div');
+            commandItem.className = 'command-item';
+            commandItem.innerHTML = `
+                <span class="command-text">${cmd}</span>
+                <div class="command-actions">
+                    <button onclick="copyCommand(${index})">Copy</button>
+                    <button onclick="deleteCommand(${index})">Delete</button>
+                </div>
+            `;
+            commandList.appendChild(commandItem);
+        });
+    }
+
+    function copyCommand(index) {
+        const tempInput = document.createElement('input');
+        tempInput.value = commands[index];
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        alert('Comando copiado: ' + commands[index]);
+    }
+
+    function deleteCommand(index) {
+        commands.splice(index, 1);
+        localStorage.setItem('commands', JSON.stringify(commands));
+        displayCommands();
+    }
+</script>
+
     <footer>
         
     <address>
